@@ -3,7 +3,7 @@ Contributors: bradvin, fooplugins
 Donate link: http://fooplugins.com
 Tags: lightbox,modal,popup,images,gallery,media
 Requires at least: 3.5.1
-Tested up to: 6.6
+Tested up to: 6.7
 Stable tag: 2.7.28
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -103,10 +103,21 @@ There is a setting to try and disable hard coded lightboxes, but this is not a s
 
 == Changelog ==
 
+= 2.7.33 =
+* Updated 10 Nov 2024
+* Update : Freemius SDK update 2.9.0
+
 = 2.7.32 =
 * Updated 4 Aug 2024
 * Update : Freemius SDK update 2.7.3
+* Update : Updated to latest FooBox client JS & CSS 2.4.13
 * Fix : Fixed parsing of HTML captions, so that it strips harmful scripts.
+
+= 2.7.29 =
+* Updated 1 June 2024
+
+= 2.7.30 =
+* Updated 8 July 2024
 
 = 2.7.29 =
 * Updated 1 June 2024
