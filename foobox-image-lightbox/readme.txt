@@ -4,7 +4,7 @@ Donate link: http://fooplugins.com
 Tags: lightbox,modal,popup,images,gallery,media
 Requires at least: 3.5.1
 Tested up to: 6.7
-Stable tag: 2.7.28
+Stable tag: 2.7.34
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -102,6 +102,11 @@ There is a setting to try and disable hard coded lightboxes, but this is not a s
 2. Phone example
 
 == Changelog ==
+
+= 2.7.34 =
+* Updated 27 Jan 2025
+* Update : Freemius SDK update 2.11.0
+* Fix : Fixed bug where custom JS from settings was being double escaped.
 
 = 2.7.33 =
 * Updated 10 Nov 2024

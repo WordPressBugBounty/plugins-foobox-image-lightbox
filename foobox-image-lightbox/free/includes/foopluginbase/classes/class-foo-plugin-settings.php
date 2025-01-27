@@ -375,7 +375,7 @@ if ( ! class_exists( 'Foo_Plugin_Settings_v2_0' ) ) {
 					break;
 
 				case 'textarea':
-					echo '<textarea' . esc_attr( $field_class ) . ' id="' . esc_attr( $id ) . '" name="' . esc_attr( $this->plugin_slug . '[' . $id . ']') . '" placeholder="' . esc_attr( $placeholder ) . '">' . esc_textarea( foobox_sanitize_javascript( $options[$id] ) ) . '</textarea>';
+					echo '<textarea' . $field_class . ' id="' . $id . '" name="' . $this->plugin_slug . '[' . $id . ']" placeholder="' . $placeholder . '">' . esc_attr( $options[$id] ) . '</textarea>';
 					break;
 
 				case 'password':
@@ -384,8 +384,7 @@ if ( ! class_exists( 'Foo_Plugin_Settings_v2_0' ) ) {
 					break;
 
 				case 'text':
-					echo '<input class="regular-text ' . esc_attr( $class ) . '" type="text" id="' . esc_attr( $id ) . '" name="' . esc_attr( $this->plugin_slug ) . '[' . esc_attr( $id ) . ']" placeholder="' . esc_attr( $placeholder ) . '" value="' . esc_attr( foobox_sanitize_javascript( $options[$id], array() ) ) . '" />';
-
+					echo '<input class="regular-text ' . $class . '" type="text" id="' . $id . '" name="' . $this->plugin_slug . '[' . $id . ']" placeholder="' . $placeholder . '" value="' . esc_attr( $options[$id] ) . '" />';
 					break;
 
 				case 'checkboxlist':
