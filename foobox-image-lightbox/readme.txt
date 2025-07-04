@@ -1,10 +1,10 @@
 === Lightbox & Modal Popup WordPress Plugin - FooBox ===
-Contributors: bradvin, fooplugins
+Contributors: fooplugins, bradvin, steveush
 Donate link: http://fooplugins.com
-Tags: lightbox,modal,popup,images,gallery,media
+Tags: lightbox,modal,popup,images,gallery
 Requires at least: 3.5.1
-Tested up to: 6.7
-Stable tag: 2.7.34
+Tested up to: 6.8
+Stable tag: 2.7.35
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -102,6 +102,13 @@ There is a setting to try and disable hard coded lightboxes, but this is not a s
 2. Phone example
 
 == Changelog ==
+
+= 2.7.35 =
+* Updated 03 July 2025
+* Update : Updated the social sharing - removed unsupported networks, updated networks to use their latest icons eg. X.com instead of Twitter.com
+* Update : Updated to latest FooBox client JS & CSS 2.5.2
+* Update : Freemius SDK update 2.12.0
+* Fix : Fixed bug where double escaped HTML was not being parsed correctly.
 
 = 2.7.34 =
 * Updated 27 Jan 2025
