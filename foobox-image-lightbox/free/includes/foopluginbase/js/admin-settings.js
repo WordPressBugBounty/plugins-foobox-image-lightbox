@@ -61,13 +61,13 @@
 
 	FOOPluginBaseAdminSettings.setupTabs = function() {
 
-		$(".foo-nav-tabs a.nav-tab").click( function(e) {
+		$(".foo-nav-tabs a").click( function(e) {
 			e.preventDefault();
 
 			$this = $(this);
 
-			$this.parents(".nav-tab-wrapper:first").find(".nav-tab-active").removeClass("nav-tab-active");
-			$this.addClass("nav-tab-active");
+			$this.parents(".foo-nav-tabs:first").find(".foo-nav-tab-active").removeClass("foo-nav-tab-active");
+			$this.addClass("foo-nav-tab-active");
 
 			$(".nav-container:visible").hide();
 
@@ -88,7 +88,7 @@
 		});
 
 		if (window.location.hash) {
-			$('a.nav-tab[href="' + window.location.hash + '"]').click();
+			$('a.foo-nav-tab[href="' + window.location.hash + '"]').click();
 		}
 
 	}; //End of setupTabs

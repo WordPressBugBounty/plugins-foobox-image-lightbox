@@ -31,39 +31,36 @@ $plugin_slug = $plugin_info['slug'];
 		echo esc_html( $summary );
 	}
 	?>
-	<div id="<?php echo $plugin_slug; ?>-settings-wrapper">
-		<div id="<?php echo $plugin_slug; ?>-settings-main">
+	<div id="<?php echo esc_attr($plugin_slug); ?>-settings-wrapper">
+		<div id="<?php echo esc_attr($plugin_slug); ?>-settings-main">
 			<form action="options.php" method="post">
 				<?php settings_fields( $plugin_slug ); ?>
 				<?php
 				if ( !empty($tabs) ) {
 					//we have tabs - woot!
 					?>
-					<div style="float:left;height:16px;width:16px;"><!-- spacer for tabs --></div>
-					<h2 class="foo-nav-tabs nav-tab-wrapper">
+					<div class="foo-nav-tabs">
 						<?php
 						//loop through the tabs to render the actual tabs at the top
 						$first = true;
 						foreach ( $tabs as $tab ) {
-							$class = $first ? "nav-tab nav-tab-active" : "nav-tab";
-							echo "<a href='#{$tab['id']}' class='$class'>{$tab['title']}</a>";
+							$class = $first ? "foo-nav-tab foo-nav-tab-active" : "foo-nav-tab";
+							echo "<a href='#" . esc_attr($tab['id']) . "' class='" . esc_attr($class) . "'>" . wp_kses_post($tab['title']) . "</a>";
 							if ( $first ) {
 								$first = false;
 							}
 						}
 						?>
-					</h2>
+					</div>
 					<?php
 					//now loop through the tabs to render the content containers
 					$first = true;
 					foreach ( $tabs as $tab ) {
-						$style = $first ? "" : "style='display:none'";
-
-						echo "<div class='nav-container' id='{$tab['id']}_tab' $style>";
+						echo '<div class="foo-nav-container" id="' . esc_attr($tab['id']) . '_tab"' . ($first ? '' : ' style="display:none"') . '>';
 
 						foreach ( (array) $wp_settings_sections[$plugin_slug] as $section ) {
 							if ( in_array( $section['id'], $tab['sections'] ) ) {
-								echo "<h3>{$section['title']}</h3>\n";
+								echo "<h3>" . esc_html($section['title']) . "</h3>\n";
 								call_user_func( $section['callback'], $section );
 								if ( !isset($wp_settings_fields) || !isset($wp_settings_fields[$plugin_slug]) || !isset($wp_settings_fields[$plugin_slug][$section['id']]) ) {
 									continue;
@@ -88,16 +85,16 @@ $plugin_slug = $plugin_info['slug'];
 				?>
 				<p class="submit">
 					<input name="submit" class="button-primary" type="submit"
-						   value="<?php _e( 'Save Changes', $plugin_slug ); ?>"/>
-					<input name="<?php echo $plugin_slug; ?>[reset-defaults]"
-						   onclick="return confirm('<?php _e( 'Are you sure you want to restore all settings back to their default values?', $plugin_slug ); ?>');"
+						   value="<?php esc_attr_e( 'Save Changes', $plugin_slug ); ?>"/>
+					<input name="<?php echo esc_attr($plugin_slug); ?>[reset-defaults]"
+						   onclick="return confirm('<?php esc_attr_e( 'Are you sure you want to restore all settings back to their default values?', $plugin_slug ); ?>');"
 						   class="button-secondary" type="submit"
-						   value="<?php _e( 'Restore Defaults', $plugin_slug ); ?>"/>
+						   value="<?php esc_attr_e( 'Restore Defaults', $plugin_slug ); ?>"/>
 					<?php do_action( $plugin_slug . '-settings_buttons' ) ?>
 				</p>
 			</form>
 		</div>
-		<div id="<?php echo $plugin_slug; ?>-settings-sidebar">
+		<div id="<?php echo esc_attr($plugin_slug); ?>-settings-sidebar">
 			<?php
             do_action($plugin_slug . '-settings-sidebar' );
             ?>

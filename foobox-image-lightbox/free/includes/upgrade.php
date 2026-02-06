@@ -1,4 +1,5 @@
 <div id="foobox-free-upgrade">
+	<p>There are tons of reasons to upgrade to FooBox PRO...</p>
 	<ul class="foobox_features">
 		<li>Social sharing</li>
 		<li>Video support</li>
@@ -7,10 +8,13 @@
 		<li>Deeplinking</li>
 		<li>Fullscreen mode</li>
 		<li>Built-in slideshow</li>
-		<li>Metro lightbox style</li>
+		<li>Metro lightbox theme</li>
+		<li>Flat lightbox theme</li>
+		<li>Glass lightbox theme</li>
 		<li><strong>4</strong> more color schemes</li>
 		<li><strong>11</strong> more button icons</li>
 		<li><strong>10</strong> more loader icons</li>
+		<li><strong>12</strong> animation effects</li>
 	</ul>
 
 	<p>Out of the box support for the following galleries and plugins...</p>

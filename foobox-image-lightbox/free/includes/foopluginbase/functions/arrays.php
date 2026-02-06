@@ -4,7 +4,7 @@
  * A bunch of common and useful functions related to arrays
  *
  * Author: Brad Vincent
- * Author URI: http://fooplugins.com
+ * Author URI: https://fooplugins.com
  * License: GPL2
 */
 

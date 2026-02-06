@@ -6,7 +6,7 @@ if ( !class_exists( 'FooBox_Free_Settings' ) ) {
 
 		function __construct() {
 			add_filter( 'foobox-free-admin_settings', array( $this, 'create_settings' ) );
-			add_action( 'foobox-free-settings-sidebar', array( $this, 'settings_sidebar' ) );
+			// Sidebar content moved into the "Thanks" tab. Sidebar hook removed.
 		}
 
 		function create_settings() {
@@ -60,6 +60,12 @@ if ( !class_exists( 'FooBox_Free_Settings' ) ) {
 			$sections['settings'] = array(
 				'tab' => 'settings',
 				'name' => __('Display Settings', 'foobox-image-lightbox')
+			);
+
+			// New: Editor Defaults section
+			$sections['editor_defaults'] = array(
+				'tab'  => 'general',
+				'name' => __( 'Editor Defaults', 'foobox-image-lightbox' ),
 			);
 
 			$settings[] = array(
@@ -127,6 +133,16 @@ if ( !class_exists( 'FooBox_Free_Settings' ) ) {
 				'default' => __( 'Could not load the item', 'foobox-image-lightbox' ),
 				'type'    => 'text',
 				'section' => 'settings',
+				'tab'     => 'general'
+			);
+
+			// Setting row: Default Image Link (custom render)
+			$settings[] = array(
+				'id'      => 'default_image_link',
+				'title'   => __( 'Default Image Link', 'foobox-image-lightbox' ),
+				'desc'    => __( "Controls WordPress' default when inserting images. FooBox works best when images link to the media file.", 'foobox-image-lightbox' ),
+				'type'    => 'editor_default_image_link',
+				'section' => 'editor_defaults',
 				'tab'     => 'general'
 			);
 
@@ -215,9 +231,9 @@ if ( !class_exists( 'FooBox_Free_Settings' ) ) {
 			//endregion
 
 			//region Upgrade tab
-			$tabs['upgrade'] = __('Upgrade to PRO!', 'foobox-image-lightbox');
+			$tabs['upgrade'] = __('Upgrade', 'foobox-image-lightbox') . '<i class="dashicons dashicons-unlock"></i>';
 
-			$link_text = __('Upgrade in WP Admin!', 'foobox-image-lightbox');
+			$link_text = __('FooBox PRO Pricing', 'foobox-image-lightbox');
 
 			if ( foobox_hide_pricing_menu() ) {
 				$link_text = '';
@@ -227,9 +243,20 @@ if ( !class_exists( 'FooBox_Free_Settings' ) ) {
 
 			$settings[] = array(
 				'id'    => 'upgrade',
-				'title' => $link . __('There are tons of reasons...', 'foobox-image-lightbox'),
+				'title' => $link,
 				'type'  => 'upgrade',
 				'tab'   => 'upgrade'
+			);
+			//endregion
+
+			//region Thanks tab
+			$tabs['thanks'] = __('Thanks', 'foobox-image-lightbox') . '<i class="dashicons dashicons-heart"></i>';
+
+			$settings[] = array(
+				'id'    => 'thanks',
+				'title' => __('Thanks for using FooBox!', 'foobox-image-lightbox'),
+				'type'  => 'thanks',
+				'tab'   => 'thanks'
 			);
 			//endregion
 
@@ -238,101 +265,6 @@ if ( !class_exists( 'FooBox_Free_Settings' ) ) {
 				'sections' => $sections,
 				'settings' => $settings
 			);
-		}
-
-		function build_install_url( $slug ) {
-			$action      = 'install-plugin';
-			return wp_nonce_url(
-				add_query_arg(
-					array(
-						'action' => $action,
-						'plugin' => $slug
-					),
-					admin_url( 'update.php' )
-				),
-				$action . '_' . $slug
-			);
-        }
-
-		function settings_sidebar() {
-			$install_foogallery = $this->build_install_url( 'foogallery' );
-			$install_foobar = $this->build_install_url( 'foobar-notifications-lite' );
-
-            $show_foobar_ad = true;
-            $show_foogallery_ad = true;
-
-            if ( class_exists( 'FooGallery_Plugin') ) {
-	            $show_foogallery_ad = false;
-            }
-
-			if ( class_exists( 'FooPlugins\FooBar\Init' ) ) {
-				$show_foobar_ad = false;
-			}
-
-		    ?>
-<style>
-    .settings-sidebar-promo {
-        width: 280px;
-        border: 1px solid #ccd0d4;
-        border-left-width: 4px;
-        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
-        background: #fff;
-        border-left-color: #007cba;
-        padding: 10px;
-        margin-bottom: 10px;
-        text-align: center;
-    }
-
-    .settings-sidebar-promo.please-rate {
-        border-left-color: #ff69b4;
-    }
-
-    .settings-sidebar-promo h2 {
-        margin-top: 0;
-    }
-
-    .settings-sidebar-promo h2 .dashicons {
-        color: #ff69b4;
-        margin-right: 5px;
-    }
-
-    .settings-sidebar-promo img {
-        padding: 0;
-        margin: 0;
-    }
-</style>
-
-<div class="settings-sidebar-promo please-rate">
-    <h2><i class="dashicons dashicons-heart"></i>Thanks for using FooBox!</h2>
-	<p>
-        If you love FooBox, please consider giving it a 5 star rating on WordPress.org. Your positive ratings help spread the word and help us grow.
-    </p>
-
-    <a class="button button-primary button-large" target="_blank" href="https://wordpress.org/support/plugin/foobox-image-lightbox/reviews/#new-post">Rate FooBox on WordPress.org</a>
-</div>
-<?php if ( $show_foobar_ad ) { ?>
-<div class="settings-sidebar-promo">
-    <h2>Grow Your Business</h2>
-    <img src="https://foocdn.s3.amazonaws.com/logos/foobar-128x128.png" />
-    <p>
-        FooBar allows you to create unlimited eye-catching notification bars, announcements and cookie notices that catch your visitor's attention.
-    </p>
-    <a class="button button-primary button-large" target="_blank" href="<?php echo $install_foobar; ?>">Install FooBar</a>
-    <a class="button button-large" target="_blank" href="https://wordpress.org/plugins/foobar-notifications-lite/">View Details</a>
-</div>
-<?php } ?>
-<?php if ( $show_foogallery_ad ) { ?>
-<div class="settings-sidebar-promo">
-    <h2>Create Beautiful Galleries</h2>
-    <img src="https://foocdn.s3.amazonaws.com/logos/foogallery-128x128.png" />
-    <p>
-        Make gallery management in WordPress great again! With FooGallery you can easily add a stunning photo gallery to your website in minutes.
-    </p>
-    <a class="button button-primary button-large" target="_blank" href="<?php echo $install_foogallery; ?>">Install FooGallery</a>
-    <a class="button button-large" target="_blank" href="https://wordpress.org/plugins/foogallery">View Details</a>
-</div>
-<?php } ?>
-<?php
 		}
 	}
 }

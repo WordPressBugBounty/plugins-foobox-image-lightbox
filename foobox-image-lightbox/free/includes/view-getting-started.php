@@ -16,49 +16,49 @@ $button_text = $show_trial_message ? __( 'Already convinced? Upgrade to PRO!', '
 </style>
 	<h2 class="nav-tab-wrapper">
 		<a class="nav-tab nav-tab-active" href="#getting-started">
-			<?php _e( 'Getting Started', 'foobox-image-lightbox' ); ?>
+			<?php esc_html_e( 'Getting Started', 'foobox-image-lightbox' ); ?>
 		</a>
 		<a class="nav-tab" href="#pro-features">
-			<?php echo $tab_text; ?>
+			<?php echo esc_html( $tab_text ); ?>
 		</a>
 		<a class="nav-tab" href="#demo">
-			<?php _e( 'Demo', 'foobox-image-lightbox' ); ?>
+			<?php esc_html_e( 'Demo', 'foobox-image-lightbox' ); ?>
 		</a>
 	</h2>
 	<div id="getting-started_tab" class="feature-section nav-container">
         <div>
-            <h2><?php _e( 'See FooBox In Action', 'foobox-image-lightbox' );?></h2>
-            <h4><?php printf( '<a rel="foobox" class="foobox" href="%s">%s</a>', esc_url ( foobox_asset_url( 'img/foobot_red.png' ) ), __( 'Click to open FooBox!', 'foobox-image-lightbox' ) ); ?></h4>
-            <p style="text-align: center; font-size:0.9em;"><?php _e( 'You know you want to...😉', 'foobox-image-lightbox' );?></p>
+            <h2><?php esc_html_e( 'See FooBox In Action', 'foobox-image-lightbox' );?></h2>
+            <h4><?php printf( '<a rel="foobox" class="foobox" href="%s">%s</a>', esc_url ( foobox_asset_url( 'img/foobot_red.png' ) ), esc_html__( 'Click to open FooBox!', 'foobox-image-lightbox' ) ); ?></h4>
+            <p style="text-align: center; font-size:0.9em;"><?php esc_html_e( 'You know you want to...😉', 'foobox-image-lightbox' );?></p>
         </div>
 		<div>
-			<h2><?php _e( 'Zero Configuration', 'foobox-image-lightbox' );?></h2>
-			<p><?php _e( 'FooBox FREE works out-of-the-box with the following standard features:', 'foobox-image-lightbox' );?></p>
-			<p> → <strong><?php _e( 'Gutenberg Editor', 'foobox-image-lightbox' ); ?></strong> - <?php _e('images within gallery and image blocks will open in FooBox (set Linked To -&gt; "Media File").', 'foobox-image-lightbox' ); ?></p>
-			<p> → <strong><a href="https://codex.wordpress.org/Caption_Shortcode" target="_blank"><?php _e( 'Captioned Images', 'foobox-image-lightbox' ); ?></a></strong> - <?php _e('images that use the <code>[caption]</code> shortcode.', 'foobox-image-lightbox' ); ?></p>
-			<p> → <strong><a href="https://codex.wordpress.org/The_WordPress_Gallery" target="_blank"><?php _e( 'WordPress Galleries', 'foobox-image-lightbox' ); ?></a></strong> - <?php _e('image galleries that use the <code>[gallery]</code> shortcode.', 'foobox-image-lightbox' ); ?></p>
-			<p> → <strong><a href="https://codex.wordpress.org/Inserting_Media_into_Posts_and_Pages" target="_blank"><?php _e( 'Attachment Images', 'foobox-image-lightbox' ); ?></a></strong> - <?php _e('images that are added using the "Add Media" tool.', 'foobox-image-lightbox' ); ?></p>
+			<h2><?php esc_html_e( 'Zero Configuration', 'foobox-image-lightbox' );?></h2>
+			<p><?php esc_html_e( 'FooBox FREE works out-of-the-box with the following standard features:', 'foobox-image-lightbox' );?></p>
+			<p> → <strong><?php esc_html_e( 'Gutenberg Editor', 'foobox-image-lightbox' ); ?></strong> - <?php esc_html_e('images within gallery and image blocks will open in FooBox (set Linked To -&gt; "Media File").', 'foobox-image-lightbox' ); ?></p>
+			<p> → <strong><?php esc_html_e( 'Captioned Images', 'foobox-image-lightbox' ); ?></strong> - <?php echo wp_kses(__('images that use the <code>[caption]</code> shortcode.', 'foobox-image-lightbox'), array('code' => array())); ?></p>
+			<p> → <strong><?php esc_html_e( 'WordPress Galleries', 'foobox-image-lightbox' ); ?></strong> - <?php echo wp_kses(__('image galleries that use the <code>[gallery]</code> shortcode.', 'foobox-image-lightbox'), array('code' => array())); ?></p>
+			<p> → <strong><?php esc_html_e( 'Attachment Images', 'foobox-image-lightbox' ); ?></strong> - <?php esc_html_e('images that are added using the "Add Media" tool.', 'foobox-image-lightbox' ); ?></p>
 			<p>
-				<?php _e( 'No configuration for the above is needed! But you can still customize the plugin from the settings page if you want to.', 'foobox-image-lightbox' ); ?>
+				<?php esc_html_e( 'No configuration for the above is needed! But you can still customize the plugin from the settings page if you want to.', 'foobox-image-lightbox' ); ?>
 			</p>
             <h4>
-				<?php printf( '<a href="%s">%s</a>', esc_url ( foobox_settings_url() ), __( 'Visit the FooBox settings page', 'foobox-image-lightbox' ) ); ?>
+				<?php printf( '<a href="%s">%s</a>', esc_url ( foobox_settings_url() ), esc_html__( 'Visit the FooBox settings page', 'foobox-image-lightbox' ) ); ?>
             </h4>
 		</div>
 		<div>
-			<h2><?php _e( 'class="foobox"', 'foobox-image-lightbox' );?></h2>
+			<h2><?php esc_html_e( 'class="foobox"', 'foobox-image-lightbox' );?></h2>
 			<p>
-				<?php _e( 'Use your own links to open images in FooBox. Just add a class of "<strong>foobox</strong>" to your links, and make sure the link points to an image, for example:', 'foobox-image-lightbox' ); ?>
+				<?php echo wp_kses(__('Use your own links to open images in FooBox. Just add a class of "<strong>foobox</strong>" to your links, and make sure the link points to an image, for example:', 'foobox-image-lightbox'), array('strong' => array())); ?>
 			</p>
 			<p style="text-align: center;">
 				<code>&lt;a href=&quot;point/to/image.jpg&quot; class=&quot;foobox&quot;&gt;open with FooBox!&lt;/a&gt;</code>
 			</p>
-			<p style="text-align: center"><strong><a href="<?php echo foobox_asset_url( 'img/foobot_red.png' ); ?>" class="foobox"><?php _e( 'open an image', 'foobox-image-lightbox' ); ?></a></strong></p>
+			<p style="text-align: center"><strong><a href="<?php echo esc_url( foobox_asset_url( 'img/foobot_red.png' ) ); ?>" class="foobox"><?php esc_html_e( 'open an image', 'foobox-image-lightbox' ); ?></a></strong></p>
 		</div>
 		<div>
-			<h2><?php _e( 'rel="gallery"', 'foobox-image-lightbox' );?></h2>
+			<h2><?php esc_html_e( 'rel="gallery"', 'foobox-image-lightbox' );?></h2>
 			<p>
-				<?php _e( 'Group your images into galleries that open in FooBox. Just add the same rel attribute to the links you want to group together, for example:', 'foobox-image-lightbox' ); ?>
+				<?php esc_html_e( 'Group your images into galleries that open in FooBox. Just add the same rel attribute to the links you want to group together, for example:', 'foobox-image-lightbox' ); ?>
 			</p>
 			<p style="text-align: center;">
 				<code>
@@ -67,12 +67,12 @@ $button_text = $show_trial_message ? __( 'Already convinced? Upgrade to PRO!', '
 					&lt;a href=&quot;image3.jpg&quot; class=&quot;foobox&quot; rel=&quot;gallery&quot;&gt;3&lt;/a&gt;
 				</code>
 			</p>
-			<p style="text-align: center"><strong><a rel="foobox" href="<?php echo foobox_asset_url( 'img/foobot_red.png' ); ?>" class="foobox"><?php _e( 'open a gallery', 'foobox-image-lightbox' ); ?></a></strong></p>
+			<p style="text-align: center"><strong><a rel="foobox" href="<?php echo esc_url( foobox_asset_url( 'img/foobot_red.png' ) ); ?>" class="foobox"><?php esc_html_e( 'open a gallery', 'foobox-image-lightbox' ); ?></a></strong></p>
 		</div>
 		<div>
-			<h2><?php _e( 'Captions', 'foobox-image-lightbox' );?></h2>
+			<h2><?php esc_html_e( 'Captions', 'foobox-image-lightbox' );?></h2>
 			<p>
-				<?php _e( 'FooBox will try to find captions from the link and image titles, but you can be sure by adding <strong>data-caption-title</strong> and <strong>data-caption-desc</strong> attributes onto your links, for example:', 'foobox-image-lightbox' );?>
+				<?php echo wp_kses(__('FooBox will try to find captions from the link and image titles, but you can be sure by adding <strong>data-caption-title</strong> and <strong>data-caption-desc</strong> attributes onto your links, for example:', 'foobox-image-lightbox'), array('strong' => array()));?>
 			</p>
 			<p style="text-align: center;">
 				<code>
@@ -81,36 +81,36 @@ $button_text = $show_trial_message ? __( 'Already convinced? Upgrade to PRO!', '
 					href=&quot;image1.jpg&quot; class=&quot;foobox&quot;&gt;1&lt;/a&gt;
 				</code>
 			</p>
-			<p style="text-align: center"><strong><a data-caption-title="A Caption Title" data-caption-desc="A longer caption description" href="<?php echo foobox_asset_url( 'img/foobot_red.png' ); ?>" class="foobox"><?php _e( 'open a captioned image', 'foobox-image-lightbox' ); ?></a></strong></p>
+			<p style="text-align: center"><strong><a data-caption-title="A Caption Title" data-caption-desc="A longer caption description" href="<?php echo esc_url( foobox_asset_url( 'img/foobot_red.png' ) ); ?>" class="foobox"><?php esc_html_e( 'open a captioned image', 'foobox-image-lightbox' ); ?></a></strong></p>
 		</div>
 	</div>
 	<div id="pro-features_tab" class="feature-section nav-container" style="display: none">
 		<?php if ( $show_trial_message ) { ?>
 		<div>
-			<h2><?php _e( 'FooBox PRO Free Trial', 'foobox-image-lightbox' );?></h2>
-			<p><?php _e( 'Want to test out all the PRO features? No problem! You can start a 7-day free trial immediately. No credit card is required!', 'foobox-image-lightbox' );?></p>
-			<h4><?php printf( '<a href="%s">%s</a>', esc_url ( foobox_freetrial_url() ), __( 'Start Your 7-day Free Trial', 'foobox-image-lightbox' ) ); ?></h4>
+			<h2><?php esc_html_e( 'FooBox PRO Free Trial', 'foobox-image-lightbox' );?></h2>
+			<p><?php esc_html_e( 'Want to test out all the PRO features? No problem! You can start a 7-day free trial immediately. No credit card is required!', 'foobox-image-lightbox' );?></p>
+			<h4><?php printf( '<a href="%s">%s</a>', esc_url ( foobox_freetrial_url() ), esc_html__( 'Start Your 7-day Free Trial', 'foobox-image-lightbox' ) ); ?></h4>
 		</div>
 		<?php } ?>
 		<div id="foobox-free-upgrade">
-			<h2><?php _e( 'PRO Features', 'foobox-image-lightbox' );?></h2>
-			<p><span class="dashicons dashicons-yes"></span><strong><?php _e( 'ALL content types', 'foobox-image-lightbox' ); ?></strong> - <?php _e( 'Images, galleries, videos, iframes, html. You name it, FooBox can open it.', 'foobox-image-lightbox' ); ?>
-			<p><span class="dashicons dashicons-yes"></span><strong><?php _e( 'Supported Galleries', 'foobox-image-lightbox' ); ?></strong> - <?php _e( 'WP Gallery, FooGallery, Justified Image Grid, JetPack Tiled Gallery, NextGen Gallery, Envira Gallery, WooCommerce product images.', 'foobox-image-lightbox' ); ?>
-			<p><span class="dashicons dashicons-yes"></span><strong><?php _e( 'Social Sharing', 'foobox-image-lightbox' ); ?></strong> - <?php _e( 'Share content to your favourite social networks with ease.', 'foobox-image-lightbox' ); ?>
-			<p><span class="dashicons dashicons-yes"></span><strong><?php _e( 'Look and feel', 'foobox-image-lightbox' ); ?></strong> - <?php _e( 'Default, Metro and Flat styles available. You can also change color schemes and icons.', 'foobox-image-lightbox' ); ?>
-			<p><span class="dashicons dashicons-yes"></span><strong><?php _e( 'Fullscreen Mode', 'foobox-image-lightbox' ); ?></strong> - <?php _e( 'Use the browser\'s native fullscreen mode to showcase your media.', 'foobox-image-lightbox' ); ?>
-			<p><span class="dashicons dashicons-yes"></span><strong><?php _e( 'Custom JS &amp; CSS', 'foobox-image-lightbox' ); ?></strong> - <?php _e( 'Power-users can add custom JS and CSS using our advanced settings.', 'foobox-image-lightbox' ); ?>
-			<p><span class="dashicons dashicons-yes"></span><strong><?php _e( 'PLUS tons more!', 'foobox-image-lightbox' ); ?></strong> - <?php _e( 'With 85+ settings available, you can customize FooBox to your heart\'s content.', 'foobox-image-lightbox' ); ?>
+			<h2><?php esc_html_e( 'PRO Features', 'foobox-image-lightbox' );?></h2>
+			<p><span class="dashicons dashicons-yes"></span><strong><?php esc_html_e( 'ALL content types', 'foobox-image-lightbox' ); ?></strong> - <?php esc_html_e( 'Images, galleries, videos, iframes, html. You name it, FooBox can open it.', 'foobox-image-lightbox' ); ?>
+			<p><span class="dashicons dashicons-yes"></span><strong><?php esc_html_e( 'Supported Galleries', 'foobox-image-lightbox' ); ?></strong> - <?php esc_html_e( 'WordPress, FooGallery, Justified Image Grid, JetPack, NextGen, Envira, WooCommerce product images.', 'foobox-image-lightbox' ); ?>
+			<p><span class="dashicons dashicons-yes"></span><strong><?php esc_html_e( 'Social Sharing', 'foobox-image-lightbox' ); ?></strong> - <?php esc_html_e( 'Share content to your favourite social networks with ease.', 'foobox-image-lightbox' ); ?>
+			<p><span class="dashicons dashicons-yes"></span><strong><?php esc_html_e( 'Look and feel', 'foobox-image-lightbox' ); ?></strong> - <?php esc_html_e( 'Default, Glass, Metro and Flat styles available. You can also change colors, icons and animations.', 'foobox-image-lightbox' ); ?>
+			<p><span class="dashicons dashicons-yes"></span><strong><?php esc_html_e( 'Fullscreen Mode', 'foobox-image-lightbox' ); ?></strong> - <?php esc_html_e( 'Use the browser\'s native fullscreen mode to showcase your media.', 'foobox-image-lightbox' ); ?>
+			<p><span class="dashicons dashicons-yes"></span><strong><?php esc_html_e( 'Custom JS &amp; CSS', 'foobox-image-lightbox' ); ?></strong> - <?php esc_html_e( 'Power-users can add custom JS and CSS using our advanced settings.', 'foobox-image-lightbox' ); ?>
+			<p><span class="dashicons dashicons-yes"></span><strong><?php esc_html_e( 'PLUS tons more!', 'foobox-image-lightbox' ); ?></strong> - <?php esc_html_e( 'With 85+ settings available, you can customize FooBox to your heart\'s content.', 'foobox-image-lightbox' ); ?>
 
 			<?php if ( !foobox_hide_pricing_menu() ) { ?>
-			<h4><?php printf( '<a href="%s">%s</a>', esc_url ( foobox_pricing_url() ), $button_text ); ?></h4>
+			<h4><?php printf( '<a href="%s">%s</a>', esc_url ( foobox_pricing_url() ), esc_html( $button_text ) ); ?></h4>
 			<?php } ?>
 
 		</div>
 	</div>
 	<div id="demo_tab" class="feature-section nav-container" style="display: none">
         <p>
-	        <?php _e( 'Click on an image:', 'foobox-image-lightbox' );?>
+	        <?php esc_html_e( 'Click on an image:', 'foobox-image-lightbox' );?>
         </p>
 		<?php
 		$size     = 70;
@@ -169,28 +169,20 @@ $button_text = $show_trial_message ? __( 'Already convinced? Upgrade to PRO!', '
 			}
 		</style>
 		<p class="demo-gallery">
-			<?php foreach ($demo_images as $demo_image) {
-				$a_href = ' href="' . $location . $demo_image['src'] . '"';
-				$a_title = isset( $demo_image['title'] ) ? ' data-caption-title="' . $demo_image['title'] . '"' : '';
-				$a_desc = isset( $demo_image['desc'] ) ? ' data-caption-desc="' . $demo_image['desc'] . '"' : '';
-
-				$img_src = ' src="' . $location . 'thumbs/' . $demo_image['src'] . '"';
-				$img_width = ' width="' . $size . '"';
-				$img_height = ' height="' . $size . '"';
-				?>
-				<a<?php echo $a_href . $a_title . $a_desc; ?> class="foobox" rel="foobox"><img <?php echo $img_src . $img_width . $img_height; ?>/></a>
+			<?php foreach ($demo_images as $demo_image) { ?>
+				<a href="<?php echo esc_url($location . $demo_image['src']); ?>"<?php if ( !empty($demo_image['title']) ) { ?> data-caption-title="<?php echo esc_attr($demo_image['title']); ?>"<?php } ?><?php if ( !empty($demo_image['desc']) ) { ?> data-caption-desc="<?php echo esc_attr($demo_image['desc']); ?>"<?php } ?> class="foobox" rel="foobox"><img src="<?php echo esc_url($location . 'thumbs/' . $demo_image['src']); ?>" width="<?php echo (int) $size; ?>" height="<?php echo (int) $size; ?>"/></a>
 			<?php } ?>
 		</p>
 		<div style="clear:both"></div>
 		<p style="text-align: center">
-			<a target="_blank" href="https://pixabay.com"/><?php _e( 'images found on pixabay.com', 'foobox-image-lightbox' );?></a>
+			<a target="_blank" href="https://pixabay.com"/><?php esc_html_e( 'images found on pixabay.com', 'foobox-image-lightbox' );?></a>
 		</p>
 		<?php if ( !class_exists( 'FooGallery_Plugin' ) ) { ?>
-		<h2><?php _e( 'Looking for a Gallery Plugin?', 'foobox-image-lightbox' );?></h2>
+		<h2><?php esc_html_e( 'Looking for a Gallery Plugin?', 'foobox-image-lightbox' );?></h2>
 		<p>
-			<?php printf( __( 'Creating image and video galleries has never been easier with our %s plugin, which works beautifully with FooBox!', 'foobox-image-lightbox' ),
-					'<strong><a target="_blank" href="' . $foogallery_url . '">FooGallery</a></strong>' ); ?>
+			<?php printf( esc_html__( 'Creating image and video galleries has never been easier with our %s plugin, which works beautifully with FooBox!', 'foobox-image-lightbox' ),
+					'<strong><a target="_blank" href="' . esc_url($foogallery_url) . '">FooGallery</a></strong>' ); ?>
 		</p>
-		<h4><?php printf( '<a href="%s" target="_blank">%s</a>', $foogallery_url, __( 'Download FooGallery', 'foobox-image-lightbox' ) ); ?></h4>
+		<h4><?php printf( '<a href="%s" target="_blank">%s</a>', esc_url($foogallery_url), esc_html__( 'Download FooGallery', 'foobox-image-lightbox' ) ); ?></h4>
 		<?php } ?>
 	</div>

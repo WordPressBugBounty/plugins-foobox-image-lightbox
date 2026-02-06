@@ -6,7 +6,7 @@
  *
  * Version: 2.0
  * Author: Brad Vincent
- * Author URI: http://fooplugins.com
+ * Author URI: https://fooplugins.com
  * License: GPL2
  */
 
@@ -148,7 +148,7 @@ if ( ! class_exists( 'Foo_Plugin_Settings_v2_0' ) ) {
 
 		public function echo_section_desc( $arg ) {
 			$section =  $this->_settings_sections[ $arg['id'] ];
-			echo $section['desc'];
+			echo wp_kses_post( $section['desc'] );
 		}
 
 		/**
@@ -307,7 +307,7 @@ if ( ! class_exists( 'Foo_Plugin_Settings_v2_0' ) ) {
 
 			$field_class = '';
 			if ( '' !== $class ) {
-				$field_class = ' class="' . $class . '"';
+				$field_class = ' class="' . esc_attr( $class ) . '"';
 			}
 
 			$errors = get_settings_errors( $id );
@@ -317,11 +317,11 @@ if ( ! class_exists( 'Foo_Plugin_Settings_v2_0' ) ) {
 			switch ( $type ) {
 
 				case 'heading':
-					echo '</td></tr><tr valign="top"><td colspan="2">' . $desc;
+					echo '</td></tr><tr valign="top"><td colspan="2">' . wp_kses_post( $desc );
 					break;
 
 				case 'html':
-					echo $desc;
+					echo wp_kses_post( $desc );
 					break;
 
 				case 'checkbox':
@@ -335,19 +335,20 @@ if ( ! class_exists( 'Foo_Plugin_Settings_v2_0' ) ) {
 					}
 
 					//echo '<input type="hidden" name="'.$this->plugin_slug.'[' . $id . '_default]" value="' . $default . '" />';
-					echo '<input' . $field_class . ' type="checkbox" id="' . $id . '" name="' . $this->plugin_slug . '[' . $id . ']" value="on"' . $checked . ' /> <label for="' . $id . '"><small>' . $desc . '</small></label>';
+					$is_checked = ( isset( $options[ $id ] ) && 'on' === $options[ $id ] ) ||
+					              ( ! isset( $options[ $id ] ) && 'on' === $default ) ||
+					              ( ! isset( $options[ $id ] ) && ! isset( $has_options ) && 'on' === $default );
+
+					echo '<input' . wp_kses_post( $field_class ) . ' type="checkbox" id="' . esc_attr( $id ) . '" name="' . esc_attr( $this->plugin_slug ) . '[' . esc_attr( $id ) . ']" value="on"' . ( $is_checked ? ' checked="checked"' : '' ) . ' /> <label for="' . esc_attr( $id ) . '"><small>' . wp_kses_post( $desc ) . '</small></label>';
 
 					break;
 
 				case 'select':
-					echo '<select' . $field_class . ' name="' . $this->plugin_slug . '[' . $id . ']">';
+					echo '<select' . wp_kses_post( $field_class ) . ' name="' . esc_attr( $this->plugin_slug ) . '[' . esc_attr( $id ) . ']">';
 
 					foreach ( $choices as $value => $label ) {
-						$selected = '';
-						if ( $options[$id] == $value ) {
-							$selected = ' selected="selected"';
-						}
-						echo '<option ' . $selected . ' value="' . $value . '">' . $label . '</option>';
+						$is_selected = ( isset( $options[$id] ) && $options[$id] == $value );
+						echo '<option' . ( $is_selected ? ' selected="selected"' : '' ) . ' value="' . esc_attr( $value ) . '">' . esc_html( $label ) . '</option>';
 					}
 
 					echo '</select>';
@@ -356,16 +357,13 @@ if ( ! class_exists( 'Foo_Plugin_Settings_v2_0' ) ) {
 
 				case 'radio':
 					$i           = 0;
-					$saved_value = $options[$id];
+					$saved_value = isset( $options[$id] ) ? $options[$id] : $default;
 					if ( empty( $saved_value ) ) {
 						$saved_value = $default;
 					}
 					foreach ( $choices as $value => $label ) {
-						$selected = '';
-						if ( $saved_value == $value ) {
-							$selected = ' checked="checked"';
-						}
-						echo '<input' . $field_class . $selected . ' type="radio" name="' . $this->plugin_slug . '[' . $id . ']" id="' . $id . $i . '" value="' . $value . '"> <label for="' . $id . $i . '">' . $label . '</label>';
+						$is_selected = ( $saved_value == $value );
+						echo '<input' . wp_kses_post( $field_class ) . ( $is_selected ? ' checked="checked"' : '' ) . ' type="radio" name="' . esc_attr( $this->plugin_slug ) . '[' . esc_attr( $id ) . ']" id="' . esc_attr( $id ) . esc_attr( $i ) . '" value="' . esc_attr( $value ) . '"> <label for="' . esc_attr( $id ) . esc_attr( $i ) . '">' . esc_html( $label ) . '</label>';
 						if ( $i < count( $choices ) - 1 ) {
 							echo '<br />';
 						}
@@ -375,28 +373,25 @@ if ( ! class_exists( 'Foo_Plugin_Settings_v2_0' ) ) {
 					break;
 
 				case 'textarea':
-					echo '<textarea' . $field_class . ' id="' . $id . '" name="' . $this->plugin_slug . '[' . $id . ']" placeholder="' . $placeholder . '">' . esc_attr( $options[$id] ) . '</textarea>';
+					echo '<textarea' . wp_kses_post( $field_class ) . ' id="' . esc_attr( $id ) . '" name="' . esc_attr( $this->plugin_slug ) . '[' . esc_attr( $id ) . ']" placeholder="' . esc_attr( $placeholder ) . '">' . esc_textarea( $options[$id] ) . '</textarea>';
 					break;
 
 				case 'password':
-					echo '<input' . $field_class . ' type="password" id="' . $id . '" name="' . $this->plugin_slug . '[' . $id . ']" value="' . esc_attr( $options[$id] ) . '" />';
+					echo '<input' . wp_kses_post( $field_class ) . ' type="password" id="' . esc_attr( $id ) . '" name="' . esc_attr( $this->plugin_slug ) . '[' . esc_attr( $id ) . ']" value="' . esc_attr( $options[$id] ) . '" />';
 
 					break;
 
 				case 'text':
-					echo '<input class="regular-text ' . $class . '" type="text" id="' . $id . '" name="' . $this->plugin_slug . '[' . $id . ']" placeholder="' . $placeholder . '" value="' . esc_attr( $options[$id] ) . '" />';
+					echo '<input class="regular-text ' . esc_attr( $class ) . '" type="text" id="' . esc_attr( $id ) . '" name="' . esc_attr( $this->plugin_slug ) . '[' . esc_attr( $id ) . ']" placeholder="' . esc_attr( $placeholder ) . '" value="' . esc_attr( $options[$id] ) . '" />';
 					break;
 
 				case 'checkboxlist':
 					$i = 0;
 					foreach ( $choices as $value => $label ) {
 
-						$checked = '';
-						if ( isset( $options[$id][$value]) && $options[$id][$value] == 'true' ) {
-							$checked = 'checked="checked"';
-						}
+						$is_checked = ( isset( $options[$id][$value] ) && 'true' === $options[$id][$value] );
 
-						echo '<input' . $field_class . ' ' . $checked . ' type="checkbox" name="' . $this->plugin_slug . '[' . $id . '|' . $value . ']" id="' . $id . $i . '" value="on"> <label for="' . $id . $i . '">' . $label . '</label>';
+						echo '<input' . wp_kses_post( $field_class ) . ( $is_checked ? ' checked="checked"' : '' ) . ' type="checkbox" name="' . esc_attr( $this->plugin_slug ) . '[' . esc_attr( $id ) . '|' . esc_attr( $value ) . ']" id="' . esc_attr( $id ) . esc_attr( $i ) . '" value="on"> <label for="' . esc_attr( $id ) . esc_attr( $i ) . '">' . esc_html( $label ) . '</label>';
 						if ( $i < count( $choices ) - 1 ) {
 							echo '<br />';
 						}
@@ -405,8 +400,8 @@ if ( ! class_exists( 'Foo_Plugin_Settings_v2_0' ) ) {
 
 					break;
 				case 'image':
-					echo '<input class="regular-text image-upload-url" type="text" id="' . $id . '" name="' . $this->plugin_slug . '[' . $id . ']" placeholder="' . $placeholder . '" value="' . esc_attr( $options[$id] ) . '" />';
-					echo '<input data-uploader-title="' . __('Select An Image', $this->plugin_slug) . '" data-link="' . $id . '" class="image-upload-button" type="button" name="upload_button" value="' . __( 'Select Image', $this->plugin_slug ) . '" />';
+					echo '<input class="regular-text image-upload-url" type="text" id="' . esc_attr( $id ) . '" name="' . esc_attr( $this->plugin_slug ) . '[' . esc_attr( $id ) . ']" placeholder="' . esc_attr( $placeholder ) . '" value="' . esc_attr( $options[$id] ) . '" />';
+					echo '<input data-uploader-title="' . esc_attr( __('Select An Image', $this->plugin_slug) ) . '" data-link="' . esc_attr( $id ) . '" class="image-upload-button" type="button" name="upload_button" value="' . esc_attr( __( 'Select Image', $this->plugin_slug ) ) . '" />';
 					break;
 
 				default:
@@ -418,12 +413,12 @@ if ( ! class_exists( 'Foo_Plugin_Settings_v2_0' ) ) {
 
 			if ( is_array( $errors ) ) {
 				foreach ( $errors as $error ) {
-					echo "<span class='error'>{$error['message']}</span>";
+					echo "<span class='error'>" . esc_html( $error['message'] ) . "</span>";
 				}
 			}
 
 			if ( 'checkbox' !== $type && 'heading' !== $type && 'html' !== $type && '' !== $desc ) {
-				echo '<br /><small>' . $desc . '</small>';
+				echo '<br /><small>' . wp_kses_post( $desc ) . '</small>';
 			}
 		}
 

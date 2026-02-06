@@ -1,16 +1,20 @@
 === Lightbox & Modal Popup WordPress Plugin - FooBox ===
-Contributors: fooplugins, bradvin, steveush
-Donate link: http://fooplugins.com
+Contributors: bradvin, fooplugins
+Donate link: https://fooplugins.com
 Tags: lightbox,modal,popup,images,gallery
 Requires at least: 3.5.1
-Tested up to: 6.8
-Stable tag: 2.7.35
+Tested up to: 6.9
+Stable tag: 2.7.41
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 A responsive image lightbox for WordPress galleries, WordPress attachments & FooGallery
 
 == Description ==
+
+FooBox adds a lightbox to your WordPress site, so images are loaded in a modal or popup instead of redirecting your visitors away from your site.
+
+Some people often refer to a lightbox as an "Image Zoom" effect. It's really just a modal overlay or popup that showcases your images.
 
 FooBox was the first lightbox to take responsive layout seriously. Not only does it scale images to look better on phones, but it rearranges it's button controls to look great in both portrait or landscape orientation.
 
@@ -36,7 +40,7 @@ Image captions set in the editor are also automatically picked up in the FooBox 
 
 You can try the PRO version for free for 7 days.
 
-**[FooBox PRO](http://fooplugins.com/foobox/?utm_source=fooboxfreeplugin&utm_medium=fooboxfreeprolink&utm_campaign=foobox_free_wprepo) Features:**
+**[FooBox PRO](https://fooplugins.com/foobox/?utm_source=fooboxfreeplugin&utm_medium=fooboxfreeprolink&utm_campaign=foobox_free_wprepo) Features:**
 
 *	Social sharing (10+ networks)
 *	Video lightbox support
@@ -44,22 +48,24 @@ You can try the PRO version for free for 7 days.
 *	iFrame support
 *	Deeplinking
 *	Fullscreen and slideshow modes
-*	Metro lightbox style
-*	Flat lightbox style
-*	5 color schemes, 12 buttons icons and 11 loader icons
+*	Glass lightbox theme (including custom color pickers)
+*	Metro lightbox theme
+*	Flat lightbox theme
+*	5 color schemes, 12 button icons and 11 loader icons
+*	12 animation effects
 *	85+ settings to customize
 
-**[FooBox PRO](http://fooplugins.com/foobox/?utm_source=fooboxfreeplugin&utm_medium=fooboxfreeprolink&utm_campaign=foobox_free_wprepo) Works With:**
+**[FooBox PRO](https://fooplugins.com/foobox/?utm_source=fooboxfreeplugin&utm_medium=fooboxfreeprolink&utm_campaign=foobox_free_wprepo) Works With:**
 
 *	[The Best Image Gallery Plugin for WordPress](https://fooplugins.com/foogallery-wordpress-gallery-plugin/)
 *	NextGen
-*	[Justified Image Grid](http://codecanyon.net/item/justified-image-grid-premium-wordpress-gallery/2594251)
+*	[Justified Image Grid](https://codecanyon.net/item/justified-image-grid-premium-wordpress-gallery/2594251)
 *   Envira Gallery
 *	WooCommerce product images (Works with WooCommerce v3+)
 *	JetPack Tiled Gallery
 *	AutOptimize
 
-Check out the [full feature comparison](http://fooplugins.com/foobox-feature-comparison/?utm_source=fooboxfreeplugin&utm_medium=fooboxcomparelink&utm_campaign=foobox_free_wprepo).
+Check out the [full feature comparison](https://fooplugins.com/foobox-feature-comparison/?utm_source=fooboxfreeplugin&utm_medium=fooboxcomparelink&utm_campaign=foobox_free_wprepo).
 
 **Complete FooBox Asset Control**
 
@@ -71,7 +77,7 @@ This new feature was only available in the PRO version beforehand, but we feel c
 
 **Translations**
 
-* [Serbo-Croatian by Borisa Djuraskovic](http://www.webhostinghub.com/)
+* [Serbo-Croatian by Borisa Djuraskovic](https://www.webhostinghub.com/)
 
 == Installation ==
 
@@ -80,6 +86,30 @@ This new feature was only available in the PRO version beforehand, but we feel c
 3. A modal lightbox will automatically be added to your linked images and galleries
 
 == Frequently Asked Questions ==
+
+= What is a WordPress gallery lightbox? =
+
+A WordPress gallery lightbox displays images in a modal overlay above the page when clicked, allowing visitors to view larger images and navigate through a gallery without leaving the page.
+
+= Does WordPress have a built-in lightbox? =
+
+Yes. WordPress 6.4+ includes a basic Expand on Click feature for galleries. It provides a simple overlay but lacks advanced features like navigation controls, styling options, and social sharing.
+
+= What is FooBox? =
+
+FooBox is a WordPress lightbox plugin that adds customizable, responsive overlays for images, with zero configuration.
+
+= Is FooBox mobile-friendly? =
+
+Yes. FooBox supports responsive layouts, swipe gestures, and touch-optimized controls for mobile and tablet devices.
+
+= Can FooBox be customized? =
+
+Yes. FooBox PRO includes themes, color controls, icons, animations, caption display options, slideshow mode, fullscreen viewing, and deep-linking.
+
+= Does FooBox slow down a website? =
+
+No. FooBox is performance-optimized and loads assets only when needed. When combined with optimized images, it does not negatively impact page speed.
 
 = FooBox is not working. I do not see a lightbox =
 
@@ -103,9 +133,29 @@ There is a setting to try and disable hard coded lightboxes, but this is not a s
 
 == Changelog ==
 
+= 2.7.41 =
+* Updated 19 Jan 2025
+* Update : Made sure all plugin check warnings were corrected.
+* Update : Updated getting started admin page to include links to homepage and docs.
+* Update : Freemius SDK update 2.13.0
+
+= 2.7.38 =
+* Updated 15 Sept 2025
+* Update : Updated the settings page - moved promos and rate widget under Thanks tab (free only)
+* Update : Freemius SDK update 2.12.2
+
+= 2.7.37 =
+* Updated 14 Sept 2025
+* New : Added setting and admin notice for "Default Image Link", which allows users to set the default link for images that do not have a link set.
+
+= 2.7.36 =
+* Updated 08 Aug 2025
+* Update : Updated to latest FooBox client JS & CSS 2.5.3
+* Update : Freemius SDK update 2.12.1
+* Fix : Fixed bug where lightbox buttons were showing as non crawable in lighthouse.
+
 = 2.7.35 =
 * Updated 03 July 2025
-* Update : Updated the social sharing - removed unsupported networks, updated networks to use their latest icons eg. X.com instead of Twitter.com
 * Update : Updated to latest FooBox client JS & CSS 2.5.2
 * Update : Freemius SDK update 2.12.0
 * Fix : Fixed bug where double escaped HTML was not being parsed correctly.

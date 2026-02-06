@@ -23,8 +23,15 @@ if ( ! class_exists( 'foobox_compatibilty_wprocket' ) ) {
 		function remove_allowed_keywords( $delay_js_scripts ) {
 			if ( is_array( $delay_js_scripts ) ) {
 				//these defaults are causing FooBox script to be delayed, which breaks FooBox
-				unset( $delay_js_scripts[ array_search( "ga( '", $delay_js_scripts ) ] );
-				unset( $delay_js_scripts[ array_search( "ga('", $delay_js_scripts ) ] );
+				$ga_search = array_search( "ga( '", $delay_js_scripts );
+				if ( $ga_search !== false ) {
+					unset( $delay_js_scripts[ $ga_search ] );
+				}
+				
+				$ga_search2 = array_search( "ga('", $delay_js_scripts );
+				if ( $ga_search2 !== false ) {
+					unset( $delay_js_scripts[ $ga_search2 ] );
+				}
 			}
 
 			return $delay_js_scripts;

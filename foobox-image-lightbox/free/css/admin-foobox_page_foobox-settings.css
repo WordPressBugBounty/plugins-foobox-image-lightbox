@@ -62,22 +62,70 @@ a.nav-tab:focus {
 #foobox-free-settings-main {
 	padding: 0;
 	margin: 0;
-	float: left;
 }
 
-#foobox-free-settings-sidebar {
-	position: absolute;
-	right: 10px;
-	float: left;
+/*
+ * Settings tabs — modern flex layout (keep original look)
+ */
+.foo-nav-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px; /* space between tabs without relying on margins */
+  border-bottom: 1px solid #c3c4c7; /* match WP admin subtle divider */
+  padding-bottom: 0;
 }
 
-#foobox-free-settings-header {
-	position: absolute;
-	width: 300px;
-	height: 67px;
-	background: url('img/demo.png') no-repeat;
-	margin-left: -200px;
-	margin-top: -20px;
+.foo-nav-tabs .foo-nav-tab {
+  margin: 0; /* spacing handled by flex gap */
+  display: inline-flex;
+  align-items: center;
+  gap: 6px; /* icon + text spacing */
+  text-decoration: none;
+  background: #e2e4e7;
+  border: 1px solid #c3c4c7;
+  border-bottom-color: #c3c4c7;
+  color: #2c3338;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 2px 2px 0 0;
+  position: relative;
+  top: 1px; /* sit on the divider */
+  box-shadow: none;
+  outline: none;
+}
+
+.foo-nav-tabs .foo-nav-tab:hover {
+  background: #f3f4f5;
+  color: #1d2327;
+}
+
+.foo-nav-tabs .foo-nav-tab.nav-tab-active,
+.foo-nav-tabs .foo-nav-tab.foo-nav-tab-active {
+  background: #f0f0f1;
+  color: #1d2327;
+  border-bottom-color: #f0f0f1; /* connect with content */
+}
+
+/* small gap from left edge on the first tab */
+.foo-nav-tabs .foo-nav-tab:first-child { margin-left: 8px; }
+
+.foo-nav-tabs .dashicons {
+  line-height: 1;
+  font-size: 18px;
+}
+
+/* Hide empty section headers produced by the settings renderer */
+.nav-container h3:empty { display: none; }
+
+/* Icon colors within tabs */
+.foo-nav-tabs .dashicons-heart { color: #ff69b4; }
+.foo-nav-tabs .dashicons-unlock { color: #007cba; }
+
+/* Ensure small screens wrap gracefully */
+@media (max-width: 600px) {
+  .foo-nav-tabs { gap: 8px; }
+  .foo-nav-tabs .foo-nav-tab { padding-left: 10px; padding-right: 10px; }
 }
 
 ul.foobox_features {

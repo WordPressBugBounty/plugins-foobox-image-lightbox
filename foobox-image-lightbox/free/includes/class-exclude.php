@@ -57,7 +57,7 @@ if ( !class_exists( 'FooBox_Free_Exclude' ) ) {
 			$metabox_desc_include = apply_filters( 'foobox_metabox_desc_include', __( 'Include FooBox on this page or post? By default, FooBox will be excluded!', 'foobox-image-lightbox' ) );
 			?>
 			<input type="hidden" name="foobox_exclude_nonce"
-				   value="<?php echo wp_create_nonce( plugin_basename( __FILE__ ) ); ?>"/>
+				   value="<?php echo esc_attr( wp_create_nonce( plugin_basename( __FILE__ ) ) ); ?>"/>
 			<table class="form-table">
 			<?php if ( !$show_include ) { ?>
 				<tr>
@@ -65,7 +65,7 @@ if ( !class_exists( 'FooBox_Free_Exclude' ) ) {
 						<input id="foobox_exclude_check"
 							   name="foobox_exclude_check" <?php echo ($exclude == "exclude") ? 'checked="checked"' : ""; ?>
 							   type="checkbox" value="exclude">
-						<label for="foobox_exclude_check"><?php echo $metabox_desc_exclude; ?></label>
+						<label for="foobox_exclude_check"><?php echo esc_html( $metabox_desc_exclude ); ?></label>
 					</td>
 				</tr>
 			<?php } else { ?>
@@ -74,7 +74,7 @@ if ( !class_exists( 'FooBox_Free_Exclude' ) ) {
 						<input id="foobox_include_check"
 						       name="foobox_include_check" <?php echo ($include == "include") ? 'checked="checked"' : ""; ?>
 						       type="checkbox" value="include">
-						<label for="foobox_include_check"><?php echo $metabox_desc_include; ?></label>
+						<label for="foobox_include_check"><?php echo esc_html( $metabox_desc_include ); ?></label>
 					</td>
 				</tr>
 			<?php } ?>

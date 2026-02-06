@@ -4,7 +4,7 @@
  * A bunch of common and useful functions related to WP_screen object
  *
  * Author: Brad Vincent
- * Author URI: http://fooplugins.com
+ * Author URI: https://fooplugins.com
  * License: GPL2
 */
 
