@@ -194,6 +194,7 @@ if ( !class_exists( 'FooBox_Free_Script_Generator' ) ) {
 			$js_options = self::generate_js_options( $fbx_options );
 			$disable_others = self::is_option_checked( $fbx_options, 'disable_others', false );
 			$foobox_ready_event = apply_filters( 'foobox_generate_javascript_ready_event', true );
+			$auto_link_images = apply_filters( 'foobox_auto_link_images', self::is_option_checked( $fbx_options, 'auto_link_images', false ) );
 			if ( $debug ) {
 				$pre_js      = apply_filters( 'foobox_generate_javascript_pre', 'console.log("FooBox - Custom JavaScript (Pre)");' );
 				$post_js     = apply_filters( 'foobox_generate_javascript_post', 'console.log("FooBox - Custom JavaScript (Post)");' );
@@ -204,6 +205,13 @@ if ( !class_exists( 'FooBox_Free_Script_Generator' ) ) {
 				$post_js     = apply_filters( 'foobox_generate_javascript_post', '' );
 				$captions_js = apply_filters( 'foobox_generate_javascript_captions', '' );
 				$custom_js   = apply_filters( 'foobox_generate_javascript_custom', '' );
+			}
+
+			if ( $auto_link_images ) {
+				$pre_js = apply_filters( 'foobox_auto_link_images_javascript', 'if ( window.FOOBOX_AUTO_LINK_IMAGES ) {
+	window.FOOBOX_AUTO_LINK_IMAGES( $ );
+}' ) . '
+' . $pre_js;
 			}
 			$js = sprintf( '/* Run FooBox FREE (v%s) */
 var FOOBOX = window.FOOBOX = {

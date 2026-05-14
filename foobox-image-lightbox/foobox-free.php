@@ -4,7 +4,7 @@
 Plugin Name: FooBox Image Lightbox
 Plugin URI: https://fooplugins.com/foobox/
 Description: The best responsive lightbox for WordPress.
-Version: 2.7.41
+Version: 2.7.43
 Author: FooPlugins
 Author URI: https://fooplugins.com
 License: GPL2
@@ -22,7 +22,7 @@ if ( function_exists( 'foobox_fs' ) ) {
         define( 'FOOBOX_BASE_ACTIVATION_REDIRECT_TRANSIENT_KEY', '_foobox_activation_redirect' );
         define( 'FOOBOX_BASE_PATH', plugin_dir_path( __FILE__ ) );
         define( 'FOOBOX_BASE_URL', plugin_dir_url( __FILE__ ) );
-        define( 'FOOBOX_BASE_VERSION', '2.7.41' );
+        define( 'FOOBOX_BASE_VERSION', '2.7.43' );
         // Create a helper function for easy SDK access.
         function foobox_fs() {
             global $foobox_fs;
@@ -30,23 +30,25 @@ if ( function_exists( 'foobox_fs' ) ) {
                 // Include Freemius SDK.
                 require_once dirname( __FILE__ ) . '/freemius/start.php';
                 $foobox_fs = fs_dynamic_init( array(
-                    'id'             => '374',
-                    'slug'           => 'foobox-image-lightbox',
-                    'type'           => 'plugin',
-                    'public_key'     => 'pk_7a17ec700c89fe71a25605589e0b9',
-                    'is_premium'     => false,
-                    'has_addons'     => false,
-                    'has_paid_plans' => true,
-                    'menu'           => array(
+                    'id'               => '374',
+                    'slug'             => 'foobox-image-lightbox',
+                    'type'             => 'plugin',
+                    'public_key'       => 'pk_7a17ec700c89fe71a25605589e0b9',
+                    'is_premium'       => false,
+                    'has_addons'       => false,
+                    'has_paid_plans'   => true,
+                    'has_affiliation'  => 'selected',
+                    'menu'             => array(
                         'slug'       => FOOBOX_BASE_SLUG,
                         'first-path' => 'admin.php?page=' . FOOBOX_BASE_SLUG,
                         'contact'    => false,
                     ),
-                    'trial'          => array(
+                    'trial'            => array(
                         'days'               => 7,
                         'is_require_payment' => false,
                     ),
-                    'is_live'        => true,
+                    'is_live'          => true,
+                    'is_org_compliant' => true,
                 ) );
             }
             return $foobox_fs;
@@ -80,13 +82,20 @@ if ( function_exists( 'foobox_fs' ) ) {
                     add_action( 'admin_menu', array($this, 'remove_admin_menu_items_on_mobile'), WP_FS__LOWEST_PRIORITY + 1 );
                     foobox_fs()->add_action( 'after_premium_version_activation', array('FooBox', 'activate') );
                     foobox_fs()->add_filter( 'pricing/show_annual_in_monthly', '__return_false' );
+                    foobox_fs()->add_filter( 'show_affiliate_program_notice', '__return_false' );
                     add_action( 'admin_page_access_denied', array($this, 'check_for_access_denies_after_account_deletion') );
                     // Show notice on FooBox admin pages if default image link type is not "file"
                     add_action( 'admin_notices', array($this, 'maybe_show_link_type_notice') );
+                    // Show notice on FooBox admin pages if auto linking is not enabled
+                    add_action( 'admin_notices', array($this, 'maybe_show_auto_link_notice') );
                     // AJAX handler to set default image link type to file
                     add_action( 'wp_ajax_foobox_set_default_image_link_type', array($this, 'ajax_set_default_image_link_type') );
                     // AJAX handler to dismiss the notice and persist preference
                     add_action( 'wp_ajax_foobox_dismiss_default_link_notice', array($this, 'ajax_dismiss_default_link_notice') );
+                    // AJAX handler to enable auto linking for existing images
+                    add_action( 'wp_ajax_foobox_enable_auto_link_images', array($this, 'ajax_enable_auto_link_images') );
+                    // AJAX handler to dismiss the auto linking notice and persist preference
+                    add_action( 'wp_ajax_foobox_dismiss_auto_link_notice', array($this, 'ajax_dismiss_auto_link_notice') );
                 }
                 //register activation hook for free
                 register_activation_hook( __FILE__, array('FooBox', 'activate') );
@@ -187,15 +196,7 @@ if ( function_exists( 'foobox_fs' ) ) {
                 if ( !current_user_can( 'manage_options' ) ) {
                     return;
                 }
-                if ( !function_exists( 'get_current_screen' ) ) {
-                    return;
-                }
-                $screen = get_current_screen();
-                if ( !$screen ) {
-                    return;
-                }
-                $allowed_screens = array('toplevel_page_' . FOOBOX_BASE_SLUG, 'foobox_page_' . FOOBOX_BASE_PAGE_SLUG_SETTINGS);
-                if ( !in_array( $screen->id, $allowed_screens, true ) ) {
+                if ( !$this->is_foobox_admin_screen() ) {
                     return;
                 }
                 // Respect a stored preference to hide this notice entirely
@@ -292,6 +293,125 @@ if ( function_exists( 'foobox_fs' ) ) {
                 <?php 
             }
 
+            public function maybe_show_auto_link_notice() {
+                if ( !current_user_can( 'manage_options' ) ) {
+                    return;
+                }
+                if ( !$this->is_foobox_admin_screen() ) {
+                    return;
+                }
+                $hide_notice = get_option( 'foobox_hide_auto_link_notice', '0' );
+                if ( '1' === $hide_notice ) {
+                    return;
+                }
+                if ( $this->auto_link_images_enabled() ) {
+                    return;
+                }
+                $enable_nonce = wp_create_nonce( 'foobox_enable_auto_link_images' );
+                $dismiss_nonce = wp_create_nonce( 'foobox_dismiss_auto_link_notice' );
+                $ajaxurl = admin_url( 'admin-ajax.php' );
+                $title = esc_html__( 'Do you have older images that do not open in FooBox?', 'foobox-image-lightbox' );
+                $message = esc_html__( 'Auto linking can fix old content with unlinked WordPress attachment images without having to update any posts or pages.', 'foobox-image-lightbox' );
+                $enable = esc_html__( 'Enable Auto Linking', 'foobox-image-lightbox' );
+                $dismiss = esc_html__( 'No thanks', 'foobox-image-lightbox' );
+                echo '<div id="foobox-auto-link-notice" class="notice notice-info is-dismissible" data-dismiss-nonce="' . esc_attr( $dismiss_nonce ) . '">';
+                echo '<p><strong>' . esc_html( $title ) . '</strong></p>';
+                echo '<p>' . esc_html( $message ) . '</p>';
+                echo '<p><button type="button" class="button button-primary" id="foobox-auto-link-enable" data-ajaxurl="' . esc_url( $ajaxurl ) . '" data-nonce="' . esc_attr( $enable_nonce ) . '">' . esc_html( $enable ) . '</button> ';
+                echo '<button type="button" class="button" id="foobox-auto-link-dismiss" data-ajaxurl="' . esc_url( $ajaxurl ) . '" data-nonce="' . esc_attr( $dismiss_nonce ) . '">' . esc_html( $dismiss ) . '</button> ';
+                echo '<span class="spinner" style="float:none; margin:3px 0 0 8px;"></span></p>';
+                echo '</div>';
+                ?>
+                <script>
+                (function(){
+                    var notice = document.getElementById('foobox-auto-link-notice');
+                    var enable = document.getElementById('foobox-auto-link-enable');
+                    var dismiss = document.getElementById('foobox-auto-link-dismiss');
+                    if (!notice || !enable || !dismiss) return;
+                    var spinner = notice.querySelector('.spinner');
+                    function setDisabled(disabled){
+                        if (disabled){
+                            enable.setAttribute('disabled','disabled');
+                            dismiss.setAttribute('disabled','disabled');
+                            if (spinner) spinner.classList.add('is-active');
+                        } else {
+                            enable.removeAttribute('disabled');
+                            dismiss.removeAttribute('disabled');
+                            if (spinner) spinner.classList.remove('is-active');
+                        }
+                    }
+                    function post(action, nonce){
+                        var params = new URLSearchParams();
+                        params.append('action', action);
+                        params.append('nonce', nonce);
+                        return fetch(enable.getAttribute('data-ajaxurl'), {
+                            method: 'POST',
+                            credentials: 'same-origin',
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+                            body: params.toString()
+                        }).then(function(res){ return res.json(); });
+                    }
+                    function dismissNotice(){
+                        setDisabled(true);
+                        post('foobox_dismiss_auto_link_notice', dismiss.getAttribute('data-nonce'))
+                            .then(function(json){
+                                if (json && json.success) {
+                                    if (notice.parentNode) {
+                                        notice.parentNode.removeChild(notice);
+                                    }
+                                } else {
+                                    setDisabled(false);
+                                    var msg = (json && json.data && json.data.message) ? json.data.message : '<?php 
+                echo esc_js( __( 'Something went wrong. Please try again.', 'foobox-image-lightbox' ) );
+                ?>';
+                                    alert(msg);
+                                }
+                            }).catch(function(){
+                                setDisabled(false);
+                                alert('<?php 
+                echo esc_js( __( 'Network error. Please try again.', 'foobox-image-lightbox' ) );
+                ?>');
+                            });
+                    }
+                    enable.addEventListener('click', function(){
+                        setDisabled(true);
+                        post('foobox_enable_auto_link_images', enable.getAttribute('data-nonce'))
+                            .then(function(json){
+                                if (json && json.success) {
+                                    var checkbox = document.getElementById('auto_link_images') ||
+                                        document.querySelector('input[name="foobox[auto_link_images]"], input[name="foobox-free[auto_link_images]"]');
+                                    if (checkbox) {
+                                        checkbox.checked = true;
+                                    }
+                                    notice.className = 'notice notice-success is-dismissible';
+                                    notice.innerHTML = '<p><?php 
+                echo esc_js( __( 'Auto linking enabled. Older unlinked images can now open in FooBox.', 'foobox-image-lightbox' ) );
+                ?></p>';
+                                } else {
+                                    setDisabled(false);
+                                    var msg = (json && json.data && json.data.message) ? json.data.message : '<?php 
+                echo esc_js( __( 'Something went wrong. Please try again.', 'foobox-image-lightbox' ) );
+                ?>';
+                                    alert(msg);
+                                }
+                            }).catch(function(){
+                                setDisabled(false);
+                                alert('<?php 
+                echo esc_js( __( 'Network error. Please try again.', 'foobox-image-lightbox' ) );
+                ?>');
+                            });
+                    });
+                    dismiss.addEventListener('click', dismissNotice);
+                    notice.addEventListener('click', function(e){
+                        if (e.target && e.target.classList && e.target.classList.contains('notice-dismiss')) {
+                            post('foobox_dismiss_auto_link_notice', notice.getAttribute('data-dismiss-nonce'));
+                        }
+                    });
+                })();
+                </script>
+                <?php 
+            }
+
             /**
              * AJAX: Set the default image link type to 'file'.
              */
@@ -332,6 +452,59 @@ if ( function_exists( 'foobox_fs' ) ) {
                 check_ajax_referer( 'foobox_dismiss_default_link_notice', 'nonce' );
                 update_option( 'foobox_hide_default_link_notice', '1' );
                 wp_send_json_success();
+            }
+
+            public function ajax_enable_auto_link_images() {
+                if ( !current_user_can( 'manage_options' ) ) {
+                    wp_send_json_error( array(
+                        'message' => __( 'Insufficient permissions.', 'foobox-image-lightbox' ),
+                    ), 403 );
+                }
+                check_ajax_referer( 'foobox_enable_auto_link_images', 'nonce' );
+                $option_name = $this->get_settings_option_name();
+                $options = get_option( $option_name, array() );
+                if ( !is_array( $options ) ) {
+                    $options = array();
+                }
+                $options['auto_link_images'] = 'on';
+                update_option( $option_name, $options );
+                delete_option( 'foobox_hide_auto_link_notice' );
+                wp_send_json_success();
+            }
+
+            public function ajax_dismiss_auto_link_notice() {
+                if ( !current_user_can( 'manage_options' ) ) {
+                    wp_send_json_error( array(
+                        'message' => __( 'Insufficient permissions.', 'foobox-image-lightbox' ),
+                    ), 403 );
+                }
+                check_ajax_referer( 'foobox_dismiss_auto_link_notice', 'nonce' );
+                update_option( 'foobox_hide_auto_link_notice', '1' );
+                wp_send_json_success();
+            }
+
+            private function is_foobox_admin_screen() {
+                if ( !function_exists( 'get_current_screen' ) ) {
+                    return false;
+                }
+                $screen = get_current_screen();
+                if ( !$screen ) {
+                    return false;
+                }
+                $allowed_screens = array('toplevel_page_' . FOOBOX_BASE_SLUG, 'foobox_page_' . FOOBOX_BASE_PAGE_SLUG_SETTINGS);
+                return in_array( $screen->id, $allowed_screens, true );
+            }
+
+            private function get_settings_option_name() {
+                if ( foobox_fs()->is__premium_only() && foobox_fs()->can_use_premium_code() ) {
+                    return 'foobox';
+                }
+                return 'foobox-free';
+            }
+
+            private function auto_link_images_enabled() {
+                $options = get_option( $this->get_settings_option_name(), array() );
+                return is_array( $options ) && array_key_exists( 'auto_link_images', $options );
             }
 
         }

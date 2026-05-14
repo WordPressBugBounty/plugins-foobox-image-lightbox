@@ -3,8 +3,8 @@ Contributors: bradvin, fooplugins
 Donate link: https://fooplugins.com
 Tags: lightbox,modal,popup,images,gallery
 Requires at least: 3.5.1
-Tested up to: 6.9
-Stable tag: 2.7.41
+Tested up to: 7.0
+Stable tag: 2.7.43
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,6 +20,11 @@ FooBox was the first lightbox to take responsive layout seriously. Not only does
 
 Add a modal popup to your website images with no setup. FooBox will automatically add modals to WordPress galleries, WordPress images with captions, and attachment images.
 
+**NEW: Auto Link Existing Images**
+
+Have older posts with images that do not open in FooBox? That is probably because those images were inserted without linking to the full-size media file.
+Enable Auto Link Existing Images and FooBox will automatically wrap unlinked WordPress attachment images on the frontend, so visitors can open them in the lightbox without you editing old content.
+
 Works with most image gallery plugins, but works best with our [FooGallery Gallery WordPress Plugin](https://fooplugins.com/foogallery-wordpress-gallery-plugin/).
 
 **FULL GUTENBERG SUPPORT**
@@ -34,6 +39,7 @@ Image captions set in the editor are also automatically picked up in the FooBox 
 *	Zero configuration!
 *	Works with WordPress galleries
 *	Works with WordPress captioned images
+*	Auto links older unlinked WordPress attachment images
 *	Control when to exclude / include FooBox JS &amp; CSS assets
 
 **Includes a 7-day free trial of FooBox Pro Lightbox!**
@@ -118,6 +124,12 @@ In the class editor, make sure your images/galleries are linking to the media fi
 FooBox scans for images or thumbs that are pointing to the full-size version of the image. If the image is not linking to the full size image, then FooBox cannot work on that image.
 You can tell if an image links to a full-size version when you can click on the image and the full size version opens in the browser.
 
+= Can FooBox work with older images that were inserted without links? =
+
+Yes. Enable the Auto Link Existing Images setting under FooBox Settings > Compatibility. FooBox will try to detect unlinked WordPress attachment images on the frontend and wrap them with a media-file link automatically, so they can open in FooBox without editing each old post or page.
+
+For new content, we still recommend setting WordPress images to Link To > Media File. The Default Image Link setting in FooBox can help make that the default for future inserts.
+
 = FooBox is not working. There is an error in the console "Uncaught ReferenceError: FooBox is not defined" =
 
 Some plugins or themes defer javascript in the page, which causes the FooBox initialization code to run BEFORE the FooBox main script is loaded. This has been fixed in version 1.2.24. Please upgrade.
@@ -133,7 +145,12 @@ There is a setting to try and disable hard coded lightboxes, but this is not a s
 
 == Changelog ==
 
-= 2.7.41 =
+= 2.7.43 =
+* Updated 14 May 2026
+* New : Added an Auto Link Existing Images setting to automatically wrap unlinked WordPress attachment images so older posts can open in FooBox.
+* New : Added Admin notice on FooBox Settings page to ask if you want to enable Auto Linking for old content.
+
+= 2.7.42 =
 * Updated 19 Jan 2025
 * Update : Made sure all plugin check warnings were corrected.
 * Update : Updated getting started admin page to include links to homepage and docs.

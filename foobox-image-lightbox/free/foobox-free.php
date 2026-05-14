@@ -21,6 +21,7 @@ if (!class_exists('Foobox_Free')) {
 
 		const JS                   = 'foobox.free.min.js';
 		const CSS                  = 'foobox.free.min.css';
+		const AUTO_LINK_JS         = 'foobox.auto-link.js';
 		const FOOBOX_URL           = 'https://fooplugins.com/plugins/foobox/?utm_source=fooboxfreeplugin&utm_medium=fooboxfreeprolink&utm_campaign=foobox_free_pro_tab';
 		const BECOME_AFFILIATE_URL = 'https://fooplugins.com/affiliate-program/';
 
@@ -388,9 +389,16 @@ if (!class_exists('Foobox_Free')) {
 		function frontend_print_scripts() {
 			if (!apply_filters('foobox_enqueue_scripts', true)) return;
 
+			$dependencies = array('jquery');
+
+			if ( $this->auto_link_images_enabled() ) {
+				$this->enqueue_auto_link_images_script();
+				$dependencies[] = 'foobox-auto-link';
+			}
+
 			$this->register_and_enqueue_js(
 				$file = self::JS,
-				$d = array('jquery'),
+				$d = $dependencies,
 				$v = false,
 				$f = false);
 
@@ -400,6 +408,23 @@ if (!class_exists('Foobox_Free')) {
 				'foobox-free-min',
 				$foobox_js,
 				'before'
+			);
+		}
+
+		function auto_link_images_enabled() {
+			return apply_filters(
+				'foobox_auto_link_images',
+				$this->options()->is_checked( 'auto_link_images', false )
+			);
+		}
+
+		function enqueue_auto_link_images_script() {
+			wp_enqueue_script(
+				'foobox-auto-link',
+				FOOBOX_BASE_URL . 'assets/js/' . self::AUTO_LINK_JS,
+				array( 'jquery' ),
+				FOOBOX_BASE_VERSION,
+				false
 			);
 		}
 

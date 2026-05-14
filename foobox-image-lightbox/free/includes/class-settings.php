@@ -62,10 +62,10 @@ if ( !class_exists( 'FooBox_Free_Settings' ) ) {
 				'name' => __('Display Settings', 'foobox-image-lightbox')
 			);
 
-			// New: Editor Defaults section
+			// Compatibility section
 			$sections['editor_defaults'] = array(
 				'tab'  => 'general',
-				'name' => __( 'Editor Defaults', 'foobox-image-lightbox' ),
+				'name' => __( 'Compatibility', 'foobox-image-lightbox' ),
 			);
 
 			$settings[] = array(
@@ -142,6 +142,15 @@ if ( !class_exists( 'FooBox_Free_Settings' ) ) {
 				'title'   => __( 'Default Image Link', 'foobox-image-lightbox' ),
 				'desc'    => __( "Controls WordPress' default when inserting images. FooBox works best when images link to the media file.", 'foobox-image-lightbox' ),
 				'type'    => 'editor_default_image_link',
+				'section' => 'editor_defaults',
+				'tab'     => 'general'
+			);
+
+			$settings[] = array(
+				'id'      => 'auto_link_images',
+				'title'   => __( 'Auto Link Existing Images', 'foobox-image-lightbox' ),
+				'desc'    => __( 'Automatically wrap unlinked WordPress attachment images so they open in FooBox. Useful for older posts where images were inserted without linking to the media file.', 'foobox-image-lightbox' ),
+				'type'    => 'checkbox',
 				'section' => 'editor_defaults',
 				'tab'     => 'general'
 			);
