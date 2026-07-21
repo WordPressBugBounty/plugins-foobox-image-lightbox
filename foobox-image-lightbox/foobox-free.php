@@ -4,7 +4,7 @@
 Plugin Name: FooBox Image Lightbox
 Plugin URI: https://fooplugins.com/foobox/
 Description: The best responsive lightbox for WordPress.
-Version: 2.7.43
+Version: 2.8.3
 Author: FooPlugins
 Author URI: https://fooplugins.com
 License: GPL2
@@ -22,7 +22,7 @@ if ( function_exists( 'foobox_fs' ) ) {
         define( 'FOOBOX_BASE_ACTIVATION_REDIRECT_TRANSIENT_KEY', '_foobox_activation_redirect' );
         define( 'FOOBOX_BASE_PATH', plugin_dir_path( __FILE__ ) );
         define( 'FOOBOX_BASE_URL', plugin_dir_url( __FILE__ ) );
-        define( 'FOOBOX_BASE_VERSION', '2.7.43' );
+        define( 'FOOBOX_BASE_VERSION', '2.8.3' );
         // Create a helper function for easy SDK access.
         function foobox_fs() {
             global $foobox_fs;
@@ -72,6 +72,9 @@ if ( function_exists( 'foobox_fs' ) ) {
             private function __construct() {
                 //include all the things!
                 $this->includes();
+                if ( class_exists( 'FooBox_Block_Editor' ) ) {
+                    FooBox_Block_Editor::init();
+                }
                 if ( is_admin() ) {
                     new FooBox_Admin_Menu();
                     add_action( 'admin_init', array($this, 'check_for_activation_redirect') );
@@ -133,6 +136,7 @@ if ( function_exists( 'foobox_fs' ) ) {
                 require_once FOOBOX_BASE_PATH . 'includes/functions.php';
                 require_once FOOBOX_BASE_PATH . 'includes/actions.php';
                 require_once FOOBOX_BASE_PATH . 'includes/filters.php';
+                require_once FOOBOX_BASE_PATH . 'includes/class-block-editor.php';
                 require_once FOOBOX_BASE_PATH . 'includes/admin/menu.php';
                 require_once FOOBOX_BASE_PATH . 'compatibility/includes.php';
             }

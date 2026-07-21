@@ -2,9 +2,10 @@
 Contributors: bradvin, fooplugins
 Donate link: https://fooplugins.com
 Tags: lightbox,modal,popup,images,gallery
-Requires at least: 3.5.1
+Requires at least: 5.8
+Requires PHP: 5.4
 Tested up to: 7.0
-Stable tag: 2.7.43
+Stable tag: 2.8.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -29,8 +30,15 @@ Works with most image gallery plugins, but works best with our [FooGallery Galle
 
 **FULL GUTENBERG SUPPORT**
 
-Within Gutenberg, FooBox lightbox will automatically add a modal popup to images and galleries that have the "Link To" setting set to "Media File".
-Image captions set in the editor are also automatically picked up in the FooBox modal popup.
+FooBox adds native block-editor controls to core Button, Image, Gallery, and Group blocks:
+
+* Image blocks support media linking, captions, style, theme, gallery grouping, maximum dimensions, large-image panning, and opening effects in FooBox Pro.
+* Gallery blocks share style, theme, modern gallery grouping, and FooBox Pro opening effects with their child Image blocks.
+* Button blocks can open images and auto-detected image URLs. FooBox Pro adds video, iframe, and hidden HTML targets, plus video-poster controls.
+* Group blocks can become hidden inline content that a FooBox Pro Button opens in a modal.
+* An opt-in compatibility setting lets FooBox take over Image and Gallery blocks using WordPress's own "Open in lightbox" option.
+
+FooBox Pro is required for HTML, iframe, and video content handlers and for all opening effects. These controls remain available in the block editor so content can be configured before upgrading without being rebuilt.
 
 **FooBox Image Lightbox Features:**
 
@@ -91,6 +99,49 @@ This new feature was only available in the PRO version beforehand, but we feel c
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. A modal lightbox will automatically be added to your linked images and galleries
 
+== Block Editor Usage ==
+
+FooBox adds a "FooBox" panel to supported core blocks in the WordPress block editor. Select a Button, Image, Gallery, or Group block, then open the block inspector sidebar to configure FooBox for that block.
+
+= Images =
+
+1. Add or select an Image block.
+2. Open the FooBox panel and enable FooBox.
+3. Use "Link image to media file" if the image is not already linked to the full media file.
+4. Optionally set a style, theme, gallery group, caption title, caption description, max size, or large-image panning. Opening effects require FooBox Pro.
+
+= Galleries =
+
+1. Add or select a Gallery block.
+2. Open the FooBox panel and enable FooBox.
+3. Use "Link gallery images to media files" so each image opens in FooBox.
+4. Set an optional gallery group, style, or theme. FooBox mirrors gallery settings to the child Image blocks and groups them without relying on legacy `rel` attributes. Opening effects require FooBox Pro.
+
+= Buttons =
+
+1. Add or select a Button block.
+2. Open the FooBox panel and enable FooBox.
+3. Choose auto-detect or image for image targets. HTML content, iframe, and video targets require FooBox Pro.
+4. Enter a Lightbox URL or target. Use "Select from media library" to choose an image or media file and fill the URL automatically.
+5. Optionally set width, height, captions, style, theme, or gallery group. Opening effects and video poster images require FooBox Pro.
+6. With FooBox Pro, hidden inline content can point to a target id such as `#demo-hidden-form`.
+
+= Hidden HTML Content (FooBox Pro) =
+
+Opening a Group block as hidden inline content requires FooBox Pro.
+
+1. Add a Group block and build the content inside it using normal blocks.
+2. Select the Group block and enable "Use as hidden FooBox content".
+3. Set an HTML id or generate one from the FooBox panel.
+4. Leave "Hide on front end" enabled when the content should only appear inside FooBox.
+5. Create a Button block, enable FooBox, set the content type to HTML content, and point the Lightbox URL or target field to the Group id.
+
+= WordPress Lightbox Compatibility =
+
+FooBox can take over Image and Gallery blocks that use WordPress's own "Open in lightbox" option. Enable this under FooBox Settings > General > Compatibility > WordPress Lightbox. This setting is off by default for upgrade safety.
+
+The Compatibility settings also include "Default Image Link" for setting WordPress's default image link behavior and "Auto Link Existing Images" for older attachment images that were inserted without media-file links.
+
 == Frequently Asked Questions ==
 
 = What is a WordPress gallery lightbox? =
@@ -144,6 +195,38 @@ There is a setting to try and disable hard coded lightboxes, but this is not a s
 2. Phone example
 
 == Changelog ==
+
+= 2.8.3 =
+* Updated 21 Jul 2026
+* Fix : Kept FooBox controls visible in the WordPress 7 block inspector's Content tab.
+* Fix : Applied each Gutenberg Gallery block's selected FooBox style and opening effect to its lightbox instance.
+
+= 2.8.2 =
+* Updated 21 Jul 2026
+* Fix : Improved handling of encoded markup in caption titles and descriptions while preserving supported HTML formatting.
+
+= 2.8.1 =
+* Updated 20 Jul 2026
+* Update : updated to Freemius SDK v2.13.4
+* Docs : clarified which Gutenberg content handlers and opening effects require FooBox Pro.
+* Fix : Sanitized WordPress caption titles and descriptions before rendering.
+
+= 2.8.0 =
+* Updated 25 Jun 2026
+* New : Added FooBox block editor controls for Button, Image, Gallery, and Group blocks.
+* New : Added Button block support for image and auto-detected lightbox targets, plus FooBox Pro HTML content, iframe, and video targets.
+* New : Added a media-library selector for the Button block "Lightbox URL or target" field.
+* New : Added FooBox Pro Group block support for hidden inline FooBox content, generated HTML ids, and frontend hiding.
+* New : Added Image block controls for media linking, captions, style, theme, FooBox Pro opening effects, gallery grouping, sizing, and large-image panning.
+* New : Added Gallery block controls that mirror parent style, theme, FooBox Pro effect, and group settings to child Image blocks.
+* New : Added an opt-in WordPress Lightbox compatibility setting so FooBox can take over core Image and Gallery blocks using WordPress's "Open in lightbox" option.
+* Update : Added `data-foobox-group` grouping support for block-editor galleries without relying on `rel` attributes.
+* Update : Added Block Editor Usage guidance to the readme and expanded the usage documentation.
+
+= 2.7.44 =
+* Updated 27 May 2026
+* Fix : Fixed a PHP warning in the WP Rocket compatibility layer when inline defer exclusions are passed as an array.
+* Fix : Prevented Google Analytics tracking handlers from throwing JavaScript errors when a FooBox item URL is missing.
 
 = 2.7.43 =
 * Updated 14 May 2026
@@ -221,7 +304,7 @@ There is a setting to try and disable hard coded lightboxes, but this is not a s
 
 = 2.7.24 =
 * Updated 03 March 2022
-* Fix : Security fix in wp-admin
+* Fix : Updated request handling in wp-admin
 * Update : Freemius SDK to 2.4.3
 
 = 2.7.22 =
@@ -316,8 +399,7 @@ There is a setting to try and disable hard coded lightboxes, but this is not a s
 * Update : Updated to latest FooBox client JS & CSS
 
 = 2.6.4 =
-* IMPORTANT : Please update to address a security vulnerability.
-* Fix : Security vulnerability
+* Fix : Improved plugin request validation and data handling
 * Fix : Included font-display for improved pagespeed score
 * Update : Freemius SDK 2.2.4
 
@@ -443,7 +525,7 @@ There is a setting to try and disable hard coded lightboxes, but this is not a s
 * Fixed navbar issues in Chrome on IOS
 
 = 1.0.5 =
-* Fixed very minor vulnerability with add_query_arg function used in admin plugins page
+* Fixed URL query handling with add_query_arg on the admin plugins page
 
 = 1.0.4 =
 * Improved FooGallery support

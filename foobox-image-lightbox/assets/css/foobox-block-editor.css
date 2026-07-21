@@ -1,0 +1,36 @@
+.foobox-editor-panel {
+	display: grid;
+	gap: 12px;
+}
+
+.foobox-editor-panel .components-base-control {
+	margin-bottom: 0;
+}
+
+.foobox-editor-help {
+	color: #646970;
+	margin: 0;
+}
+
+.block-editor-block-list__block.is-foobox-enabled {
+	outline: 1px solid #2271b1;
+	outline-offset: 2px;
+}
+
+.block-editor-block-list__block.is-foobox-hidden-content {
+	outline: 1px dashed #8c8f94;
+	outline-offset: 2px;
+}
+
+.block-editor-block-list__block.is-foobox-hidden-content::before {
+	background: #f6f7f7;
+	border: 1px solid #dcdcde;
+	border-radius: 2px;
+	color: #50575e;
+	content: "FooBox hidden content";
+	display: inline-block;
+	font-size: 11px;
+	line-height: 1.4;
+	margin-bottom: 6px;
+	padding: 2px 6px;
+}

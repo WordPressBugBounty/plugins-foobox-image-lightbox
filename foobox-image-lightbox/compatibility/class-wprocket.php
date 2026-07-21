@@ -16,8 +16,28 @@ if ( ! class_exists( 'foobox_compatibilty_wprocket' ) ) {
 			}
 		}
 
-		function add_foobox_to_defer_inline_exclusions( $regex ) {
-			return $regex . '|FOOBOX';
+		function add_foobox_to_defer_inline_exclusions( $inline_exclusions ) {
+			if ( is_array( $inline_exclusions ) ) {
+				if ( ! in_array( 'FOOBOX', $inline_exclusions, true ) ) {
+					$inline_exclusions[] = 'FOOBOX';
+				}
+
+				return $inline_exclusions;
+			}
+
+			if ( is_string( $inline_exclusions ) ) {
+				if ( empty( $inline_exclusions ) ) {
+					return 'FOOBOX';
+				}
+
+				if ( false !== strpos( $inline_exclusions, 'FOOBOX' ) ) {
+					return $inline_exclusions;
+				}
+
+				return $inline_exclusions . '|FOOBOX';
+			}
+
+			return array( 'FOOBOX' );
 		}
 
 		function remove_allowed_keywords( $delay_js_scripts ) {

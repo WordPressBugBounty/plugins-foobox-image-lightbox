@@ -94,6 +94,10 @@ if (!class_exists('Foobox_Free')) {
 		function enqueue_block_editor_assets() {
 			$this->frontend_print_scripts();
 			$this->frontend_print_styles();
+
+			if ( class_exists( 'FooBox_Block_Editor' ) ) {
+				FooBox_Block_Editor::enqueue_assets();
+			}
 		}
 
 		function custom_admin_settings_render($args = array()) {

@@ -155,6 +155,15 @@ if ( !class_exists( 'FooBox_Free_Settings' ) ) {
 				'tab'     => 'general'
 			);
 
+			$settings[] = array(
+				'id'      => 'override_core_lightbox',
+				'title'   => __( 'WordPress Lightbox', 'foobox-image-lightbox' ),
+				'desc'    => __( 'Use FooBox when Image or Gallery blocks are set to open in the WordPress lightbox. FooBox disables the core lightbox for those blocks to prevent duplicate lightboxes.', 'foobox-image-lightbox' ),
+				'type'    => 'checkbox',
+				'section' => 'editor_defaults',
+				'tab'     => 'general'
+			);
+
 			//endregion
 
 			//region Advanced Tab
