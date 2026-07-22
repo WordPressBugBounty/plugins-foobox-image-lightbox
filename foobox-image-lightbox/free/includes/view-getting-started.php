@@ -1,14 +1,16 @@
 <?php
 $foogallery_url = 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/?utm_source=foobox_free_plugin&utm_medium=foobox_free_link&utm_campaign=foobox_free_admin_getting_started';
 
-$fs_instance = freemius( FOOBOX_BASE_SLUG );
-$show_trial_message = !$fs_instance->is_trial_utilized();
+$fs_instance = function_exists( 'freemius' ) ? freemius( FOOBOX_BASE_SLUG ) : null;
+$show_trial_message = is_object( $fs_instance ) && method_exists( $fs_instance, 'is_trial_utilized' )
+	? ! $fs_instance->is_trial_utilized()
+	: false;
 $tab_text = $show_trial_message ? __( 'Free Trial', 'foobox-image-lightbox' ) : __( 'Upgrade to PRO', 'foobox-image-lightbox' );
 $button_text = $show_trial_message ? __( 'Already convinced? Upgrade to PRO!', 'foobox-image-lightbox' ) : __( 'Upgrade to PRO!', 'foobox-image-lightbox' );
 
 ?>
 <style>
-	.feature-section .dashicons {
+	.feature-section:not(#block-editor_tab) .dashicons {
 		font-size: 1.8em;
 		color: green;
 		padding-right: 10px;
@@ -17,6 +19,9 @@ $button_text = $show_trial_message ? __( 'Already convinced? Upgrade to PRO!', '
 	<h2 class="nav-tab-wrapper">
 		<a class="nav-tab nav-tab-active" href="#getting-started">
 			<?php esc_html_e( 'Getting Started', 'foobox-image-lightbox' ); ?>
+		</a>
+		<a class="nav-tab" href="#block-editor">
+			<?php esc_html_e( 'Block Editor', 'foobox-image-lightbox' ); ?>
 		</a>
 		<a class="nav-tab" href="#pro-features">
 			<?php echo esc_html( $tab_text ); ?>
@@ -83,6 +88,12 @@ $button_text = $show_trial_message ? __( 'Already convinced? Upgrade to PRO!', '
 			</p>
 			<p style="text-align: center"><strong><a data-caption-title="A Caption Title" data-caption-desc="A longer caption description" href="<?php echo esc_url( foobox_asset_url( 'img/foobot_red.png' ) ); ?>" class="foobox"><?php esc_html_e( 'open a captioned image', 'foobox-image-lightbox' ); ?></a></strong></p>
 		</div>
+	</div>
+	<div id="block-editor_tab" class="feature-section nav-container" style="display: none">
+		<?php
+		$foobox_block_editor_is_pro = false;
+		require FOOBOX_BASE_PATH . 'includes/admin/view-block-editor-help.php';
+		?>
 	</div>
 	<div id="pro-features_tab" class="feature-section nav-container" style="display: none">
 		<?php if ( $show_trial_message ) { ?>

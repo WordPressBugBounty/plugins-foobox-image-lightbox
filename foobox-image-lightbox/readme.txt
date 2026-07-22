@@ -5,7 +5,7 @@ Tags: lightbox,modal,popup,images,gallery
 Requires at least: 5.8
 Requires PHP: 5.4
 Tested up to: 7.0
-Stable tag: 2.8.2
+Stable tag: 2.8.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -103,6 +103,8 @@ This new feature was only available in the PRO version beforehand, but we feel c
 
 FooBox adds a "FooBox" panel to supported core blocks in the WordPress block editor. Select a Button, Image, Gallery, or Group block, then open the block inspector sidebar to configure FooBox for that block.
 
+For a quick reference inside WordPress, open FooBox > Getting Started > Block Editor. This help tab includes the common Image, Gallery, Button, and hidden-content workflows, plus a control reference and troubleshooting tips.
+
 = Images =
 
 1. Add or select an Image block.
@@ -195,6 +197,10 @@ There is a setting to try and disable hard coded lightboxes, but this is not a s
 2. Phone example
 
 == Changelog ==
+
+= 2.8.4 =
+* Updated 22 Jul 2026
+* New : Added a Block Editor help tab to the FooBox Getting Started admin pages.
 
 = 2.8.3 =
 * Updated 21 Jul 2026
