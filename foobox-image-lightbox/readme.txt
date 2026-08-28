@@ -4,8 +4,8 @@ Donate link: https://fooplugins.com
 Tags: lightbox,modal,popup,images,gallery
 Requires at least: 5.8
 Requires PHP: 5.4
-Tested up to: 7.0
-Stable tag: 2.8.4
+Tested up to: 7.1
+Stable tag: 2.8.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -197,6 +197,11 @@ There is a setting to try and disable hard coded lightboxes, but this is not a s
 2. Phone example
 
 == Changelog ==
+
+= 2.8.5 =
+* Updated 27 Aug 2026
+* New : Automatically include FooBox frontend assets on saved posts that use enabled FooBox block editor controls when assets are excluded by default.
+* Fix : Hardened FooBox Pro social sharing requests to reject malformed input cleanly and prevent PHP fatal errors.
 
 = 2.8.4 =
 * Updated 22 Jul 2026

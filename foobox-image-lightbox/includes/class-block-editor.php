@@ -9,17 +9,66 @@ if ( ! class_exists( 'FooBox_Block_Editor' ) ) {
 
 	class FooBox_Block_Editor {
 
-		const SCRIPT_HANDLE = 'foobox-block-editor';
-		const STYLE_HANDLE  = 'foobox-block-editor';
+		const SCRIPT_HANDLE         = 'foobox-block-editor';
+		const STYLE_HANDLE          = 'foobox-block-editor';
 		const CORE_LIGHTBOX_SETTING = 'override_core_lightbox';
+		const BLOCK_ASSETS_META_KEY = '_foobox_block_assets_required';
 
 		/**
 		 * Register shared block hooks used outside the editor.
 		 */
 		public static function init() {
+			add_action( 'save_post', array( __CLASS__, 'save_block_asset_requirement' ), 20, 3 );
 			add_filter( 'render_block_data', array( __CLASS__, 'filter_render_block_data' ), 9, 3 );
 			add_filter( 'render_block_core/image', array( __CLASS__, 'render_image_block' ), 20, 3 );
 			add_filter( 'render_block_core/gallery', array( __CLASS__, 'render_gallery_block' ), 20, 3 );
+			add_filter( 'foobox_enqueue_scripts', array( __CLASS__, 'force_enqueue_block_assets' ), 100 );
+			add_filter( 'foobox_enqueue_styles', array( __CLASS__, 'force_enqueue_block_assets' ), 100 );
+		}
+
+		/**
+		 * Record whether saved block content requires FooBox frontend assets.
+		 *
+		 * @param int     $post_id Post ID.
+		 * @param WP_Post $post Post object.
+		 * @param bool    $update Whether this is an update to an existing post.
+		 */
+		public static function save_block_asset_requirement( $post_id, $post, $update = false ) {
+			if ( wp_is_post_revision( $post_id ) || wp_is_post_autosave( $post_id ) ) {
+				return;
+			}
+
+			if ( ! self::setting_enabled( 'excludebydefault', false ) ) {
+				delete_post_meta( $post_id, self::BLOCK_ASSETS_META_KEY );
+				return;
+			}
+
+			if ( $post instanceof WP_Post && self::content_requires_foobox_assets( $post->post_content ) ) {
+				update_post_meta( $post_id, self::BLOCK_ASSETS_META_KEY, '1' );
+				return;
+			}
+
+			delete_post_meta( $post_id, self::BLOCK_ASSETS_META_KEY );
+		}
+
+		/**
+		 * Re-enable FooBox assets when the current post contains enabled FooBox blocks.
+		 *
+		 * @param bool $enqueue Whether the asset should be enqueued.
+		 * @return bool
+		 */
+		public static function force_enqueue_block_assets( $enqueue ) {
+			if ( $enqueue || ! self::setting_enabled( 'excludebydefault', false ) || ! is_singular() ) {
+				return $enqueue;
+			}
+
+			global $post;
+
+			if ( $post instanceof WP_Post && '1' === get_post_meta( $post->ID, self::BLOCK_ASSETS_META_KEY, true ) ) {
+				return true;
+			}
+
+			return $enqueue;
 		}
 
 		/**
@@ -280,6 +329,42 @@ if ( ! class_exists( 'FooBox_Block_Editor' ) ) {
 			}
 
 			return 'foobox-free';
+		}
+
+		/**
+		 * Check saved post content for a block with FooBox enabled.
+		 *
+		 * @param string $content Saved post content.
+		 * @return bool
+		 */
+		private static function content_requires_foobox_assets( $content ) {
+			if ( ! is_string( $content ) || '' === $content || ! has_blocks( $content ) ) {
+				return false;
+			}
+
+			return self::blocks_require_foobox_assets( parse_blocks( $content ) );
+		}
+
+		/**
+		 * Recursively check parsed blocks for enabled FooBox controls.
+		 *
+		 * @param array $blocks Parsed blocks.
+		 * @return bool
+		 */
+		private static function blocks_require_foobox_assets( $blocks ) {
+			foreach ( $blocks as $block ) {
+				$attrs = isset( $block['attrs'] ) && is_array( $block['attrs'] ) ? $block['attrs'] : array();
+
+				if ( isset( $attrs['fooboxEnabled'] ) && true === $attrs['fooboxEnabled'] ) {
+					return true;
+				}
+
+				if ( ! empty( $block['innerBlocks'] ) && self::blocks_require_foobox_assets( $block['innerBlocks'] ) ) {
+					return true;
+				}
+			}
+
+			return false;
 		}
 
 		/**
