@@ -198,6 +198,14 @@ There is a setting to try and disable hard coded lightboxes, but this is not a s
 
 == Changelog ==
 
+= 2.8.7 =
+* Updated 12 Oct 2026
+* Update : updated to Freemius SDK v2.13.5 (includes security fixes)
+
+= 2.8.6 =
+* Updated 02 Sep 2026
+* Fix : Removed the legacy extra FooBox settings menu so settings are only available under FooBox > Settings.
+
 = 2.8.5 =
 * Updated 27 Aug 2026
 * New : Automatically include FooBox frontend assets on saved posts that use enabled FooBox block editor controls when assets are excluded by default.
