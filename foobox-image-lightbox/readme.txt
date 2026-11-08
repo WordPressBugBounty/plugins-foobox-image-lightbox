@@ -5,7 +5,7 @@ Tags: lightbox,modal,popup,images,gallery
 Requires at least: 5.8
 Requires PHP: 5.4
 Tested up to: 7.1
-Stable tag: 2.8.5
+Stable tag: 2.8.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,7 @@ You can try the PRO version for free for 7 days.
 *	WooCommerce product images (Works with WooCommerce v3+)
 *	JetPack Tiled Gallery
 *	AutOptimize
+*	[WP Plugin Info Card](https://wordpress.org/plugins/wp-plugin-info-card/)
 
 Check out the [full feature comparison](https://fooplugins.com/foobox-feature-comparison/?utm_source=fooboxfreeplugin&utm_medium=fooboxcomparelink&utm_campaign=foobox_free_wprepo).
 
@@ -197,6 +198,12 @@ There is a setting to try and disable hard coded lightboxes, but this is not a s
 2. Phone example
 
 == Changelog ==
+
+= 2.8.8 =
+* Updated 07 Nov 2026
+* Update : Moved FooBox block editor controls from the Content tab to the Settings tab.
+* Security : Sanitize WordPress captions before comparing their text to prevent stored DOM-based cross-site scripting through image attributes.
+* Fix : Use original attachment URLs for new Gallery and Image block media links instead of the selected display size, including when overriding the WordPress lightbox. Preserve existing links and wait for attachment data before saving new media links.
 
 = 2.8.7 =
 * Updated 12 Oct 2026

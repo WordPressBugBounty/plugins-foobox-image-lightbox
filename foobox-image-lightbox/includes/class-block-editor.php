@@ -86,6 +86,7 @@ if ( ! class_exists( 'FooBox_Block_Editor' ) ) {
 					'wp-blocks',
 					'wp-components',
 					'wp-compose',
+					'wp-core-data',
 					'wp-data',
 					'wp-element',
 					'wp-hooks',
@@ -107,7 +108,7 @@ if ( ! class_exists( 'FooBox_Block_Editor' ) ) {
 				'FOOBOX_BLOCK_EDITOR',
 				array(
 					'overrideCoreLightbox' => self::core_lightbox_override_enabled(),
-					'inspectorGroup'       => version_compare( get_bloginfo( 'version' ), '7.0', '>=' ) ? 'content' : '',
+					'inspectorGroup'       => 'settings',
 					'styles'               => array(
 						array(
 							'label' => __( 'Default', 'foobox-image-lightbox' ),

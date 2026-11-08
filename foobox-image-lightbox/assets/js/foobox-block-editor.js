@@ -351,23 +351,47 @@
 		return cloneElement( element, mergeProps( element.props || {}, props ) );
 	}
 
-	function syncImageCoreLightboxAttributes( props ) {
+	function useImageMediaUrl( props ) {
+		var attrs = props.attributes || {};
+		var enabled = props.name === 'core/image' && ( attrs.fooboxEnabled || ( coreLightboxOverrideEnabled() && hasCoreLightboxEnabled( attrs ) ) );
+
+		return wp.data.useSelect( function ( select ) {
+			var media;
+
+			if ( ! enabled ) {
+				return '';
+			}
+
+			// External images have no attachment to resolve. For attachments, never
+			// persist the selected rendition while the original is loading or missing.
+			if ( ! attrs.id ) {
+				return attrs.url || '';
+			}
+
+			media = select( 'core' ).getMedia( attrs.id );
+			return media && media.source_url ? media.source_url : '';
+		}, [ enabled, attrs.id, attrs.url ] );
+	}
+
+	function syncImageCoreLightboxAttributes( props, mediaUrl ) {
 		useEffect( function () {
 			var attrs = props.attributes || {};
-			var next;
+			var next = {};
+			var wantsCoreLightbox = coreLightboxOverrideEnabled() && hasCoreLightboxEnabled( attrs );
 
-			if ( ! coreLightboxOverrideEnabled() || props.name !== 'core/image' || ! hasCoreLightboxEnabled( attrs ) ) {
+			if ( props.name !== 'core/image' || ( ! attrs.fooboxEnabled && ! wantsCoreLightbox ) ) {
 				return;
 			}
 
-			next = {
-				fooboxEnabled: true,
-				linkDestination: 'media',
-				lightbox: { enabled: false }
-			};
+			if ( wantsCoreLightbox ) {
+				next.fooboxEnabled = true;
+				next.linkDestination = 'media';
+				next.lightbox = { enabled: false };
+			}
 
-			if ( attrs.url && ! attrs.href ) {
-				next.href = attrs.url;
+			if ( mediaUrl && ! attrs.href && ( wantsCoreLightbox || attrs.linkDestination === 'media' ) ) {
+				next.href = mediaUrl;
+				next.linkDestination = 'media';
 			}
 
 			setChangedAttributes( props, next );
@@ -443,10 +467,6 @@
 					if ( valuesDiffer( child.attributes.lightbox, { enabled: false } ) ) {
 						next.lightbox = { enabled: false };
 					}
-				}
-
-				if ( enabled && ! child.attributes.href && child.attributes.url ) {
-					next.href = child.attributes.url;
 				}
 
 				if ( Object.keys( next ).length ) {
@@ -681,7 +701,7 @@
 		].concat( renderVideoControls( attrs, setAttributes ), renderSizeControls( attrs, setAttributes, false ), renderCommonControls( attrs, setAttributes, 'core/button' ) );
 	}
 
-	function renderImageControls( attrs, setAttributes ) {
+	function renderImageControls( attrs, setAttributes, mediaUrl ) {
 		var controls = [];
 
 		if ( attrs.url && attrs.linkDestination !== 'media' ) {
@@ -689,10 +709,14 @@
 				createElement( Button, {
 					key: 'media-link',
 					variant: 'secondary',
+					disabled: ! mediaUrl,
 					onClick: function () {
+						if ( ! mediaUrl ) {
+							return;
+						}
 						setAttributes( {
 							linkDestination: 'media',
-							href: attrs.url
+							href: mediaUrl
 						} );
 					}
 				}, __( 'Link image to media file', 'foobox-image-lightbox' ) )
@@ -767,7 +791,7 @@
 		].concat( renderSizeControls( attrs, setAttributes, false ) );
 	}
 
-	function renderControlsForBlock( props ) {
+	function renderControlsForBlock( props, mediaUrl ) {
 		var attrs = props.attributes;
 		var blockName = props.name;
 		var mode = BLOCKS[ blockName ];
@@ -796,7 +820,7 @@
 			return children.concat( renderTriggerControls( attrs, props.setAttributes ) );
 		}
 		if ( blockName === 'core/image' ) {
-			return children.concat( renderImageControls( attrs, props.setAttributes ) );
+			return children.concat( renderImageControls( attrs, props.setAttributes, mediaUrl ) );
 		}
 		if ( blockName === 'core/gallery' ) {
 			return children.concat( renderGalleryControls( attrs, props.setAttributes ) );
@@ -819,7 +843,8 @@
 
 	addFilter( 'editor.BlockEdit', 'foobox/block-editor/controls', createHigherOrderComponent( function ( BlockEdit ) {
 		return function ( props ) {
-			syncImageCoreLightboxAttributes( props );
+			var mediaUrl = useImageMediaUrl( props );
+			syncImageCoreLightboxAttributes( props, mediaUrl );
 			syncGalleryChildAttributes( props );
 
 			if ( ! isSupported( props.name ) ) {
@@ -839,7 +864,7 @@
 							title: __( 'FooBox', 'foobox-image-lightbox' ),
 							initialOpen: !! props.attributes.fooboxEnabled
 						},
-						createElement( 'div', { className: 'foobox-editor-panel' }, renderControlsForBlock( props ) )
+						createElement( 'div', { className: 'foobox-editor-panel' }, renderControlsForBlock( props, mediaUrl ) )
 					)
 				)
 			);
